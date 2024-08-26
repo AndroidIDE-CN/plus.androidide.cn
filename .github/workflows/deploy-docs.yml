@@ -31,7 +31,7 @@ jobs:
       - name: 安装依赖
         run: |
           npm install --legacy-peer-deps
-
+          npm install @vuepress/plugin-back-to-top
       - name: 构建文档
         env:
           NODE_OPTIONS: --max_old_space_size=8192
