@@ -32,4 +32,11 @@ jobs:
         run: |
           npm install --legacy-peer-deps
 
+      - name: 构建文档
+        env:
+          NODE_OPTIONS: --max_old_space_size=8192
+        run: |-
+          npm run docs:build
+          > src/.vuepress/dist/.nojekyll
+
       
