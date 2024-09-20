@@ -1,0 +1,36 @@
+[
+  {
+    "class_name": "一些友链",
+    "class_desc": "这是一个介绍",
+    "link_list": [
+      {
+        "name": "AIDE Pro",
+        "link": "https://pro.androidide.cn/",
+        "avatar": "https://pro.androidide.cn/images/preview.jpg",
+        "descr": "这是另外一款深度定制的AIDE",
+        "theme_color": "#2196f2"
+      },
+      {
+        "name": "AIDE Pro",
+        "link": "https://pro.androidide.cn/",
+        "avatar": "https://pro.androidide.cn/images/preview.jpg",
+        "descr": "这是另外一款深度定制的AIDE",
+        "theme_color": "#2196f2"
+      },
+      {
+        "name": "AIDE Pro",
+        "link": "https://pro.androidide.cn/",
+        "avatar": "https://pro.androidide.cn/images/preview.jpg",
+        "descr": "这是另外一款深度定制的AIDE",
+        "theme_color": "#2196f2"
+      },
+      {
+        "name": "AIDE Pro",
+        "link": "https://pro.androidide.cn/",
+        "avatar": "https://pro.androidide.cn/images/preview.jpg",
+        "descr": "这是另外一款深度定制的AIDE",
+        "theme_color": "#2196f2"
+      }
+    ]
+  }
+]
