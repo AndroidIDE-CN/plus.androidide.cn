@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN" class="mdui-theme-auto">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"/>
+  <link rel="stylesheet" href="/node_modules/mdui/mdui.css"/>
+  <link rel="shortcut icon" type="image/png" href="/117618367.png"/>
+  <title>AndroidIDE</title>
+  <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+<div id="app">
+  <mdui-top-app-bar variant="medium" scroll-behavior="shrink" scroll-target=".example-label-large-slot">
+    <mdui-button-icon icon="android" type="button" variant="standard"></mdui-button-icon>
+    <mdui-top-app-bar-title>
+      Android IDE
+      <span slot="label-large">Android IDE for China</span>
+    </mdui-top-app-bar-title>
+    <div style="flex-grow: 1"></div>
+    <mdui-button-icon icon="info" type="button" variant="standard" id="showDialog"></mdui-button-icon>
+  </mdui-top-app-bar>
+  <div class="example-label-large-slot" style="padding-top: 112px;">
+    <div style="position: relative;overflow: hidden">
+      <mdui-navigation-bar scroll-behavior="hide" scroll-threshold="30" scroll-target=".example-scroll-behavior" value="item-1">
+        <mdui-navigation-bar-item icon="language" value="item-1">
+          <mdui-badge slot="badge">NEW</mdui-badge>
+        </mdui-navigation-bar-item>
+        <mdui-navigation-bar-item icon="code" value="item-2"></mdui-navigation-bar-item>
+        <mdui-navigation-bar-item icon="person" value="item-3"></mdui-navigation-bar-item>
+      </mdui-navigation-bar>
+      <div class="example-scroll-behavior" style="overflow: auto;">
+        <mdui-tabs value="tab-1" full-width>
+          <mdui-tab value="tab-1">
+            Web
+            <mdui-badge slot="badge">99+</mdui-badge>
+          </mdui-tab>
+          <mdui-tab value="tab-2">Code</mdui-tab>
+          <mdui-tab value="tab-3">Team</mdui-tab>
+          <mdui-tab-panel slot="panel" value="tab-1">
+            <div class="grid" id="content"></div>
+          </mdui-tab-panel>
+          <mdui-tab-panel slot="panel" value="tab-2">
+            <div>Hello,World!</div>
+          </mdui-tab-panel>
+          <mdui-tab-panel slot="panel" value="tab-3">
+            <div>Hello,World!!</div>
+          </mdui-tab-panel>
+        </mdui-tabs>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="module" src="/src/main.ts"></script>
+</body>
+</html>

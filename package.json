@@ -1,0 +1,20 @@
+{
+  "name": "plus.androidide.cn",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "mdui": "^2.1.2",
+    "@mdui/icons": "^1.0.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2",
+    "prettier": "^3.3.1",
+    "vite": "^5.2.0"
+  }
+}
