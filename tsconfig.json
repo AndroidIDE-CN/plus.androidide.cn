@@ -1,23 +1,23 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
+    "target": "ESNext", // 使用最新的ES标准，确保现代特性可用
+    "useDefineForClassFields": true, // 保持类字段定义的现代化特性
     "module": "ESNext",
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": ["ESNext", "DOM", "DOM.Iterable"], // 更新lib为ESNext，以利用最新特性
     "skipLibCheck": true,
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
+    "moduleResolution": "bundler", // 为Vite和现代打包工具优化的解析模式
+    "allowImportingTsExtensions": true, // 允许导入.ts扩展名文件
+    "resolveJsonModule": true, // 支持导入JSON文件
+    "isolatedModules": true, // 独立模块支持，避免全局依赖
 
     /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "strict": true, // 启用严格模式以增强类型检查
+    "noUnusedLocals": true, // 移除未使用的本地变量
+    "noUnusedParameters": true, // 移除未使用的参数
+    "noFallthroughCasesInSwitch": true, // 避免switch中的fallthrough
+    "noEmit": true // 不输出编译结果，交由Vite处理
   },
   "include": ["src"]
 }
