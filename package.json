@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "web-types": ["/node_modules/mdui/web-types.zh-cn.json"],
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

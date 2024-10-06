@@ -4,53 +4,56 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"/>
-  <link rel="stylesheet" href="/node_modules/mdui/mdui.css"/>
   <link rel="shortcut icon" type="image/png" href="/117618367.png"/>
   <title>AndroidIDE</title>
+  <link rel="stylesheet" href="/node_modules/mdui/mdui.css"/>
   <link rel="stylesheet" href="/style.css"/>
+  <script type="module" src="/src/lang/lang.ts"></script>
 </head>
 <body>
-<div id="app">
-  <mdui-top-app-bar variant="medium" scroll-behavior="shrink" scroll-target=".example-label-large-slot">
-    <mdui-button-icon icon="android" type="button" variant="standard"></mdui-button-icon>
-    <mdui-top-app-bar-title>
-      Android IDE
-      <span slot="label-large">Android IDE for China</span>
-    </mdui-top-app-bar-title>
+<mdui-layout class="root-contained">
+  <mdui-navigation-drawer class="navigation-drawer" contained>
+    <mdui-menu class="navigation-drawer-list">
+      <mdui-menu-item class="menu-list-home" icon="home">Home</mdui-menu-item>
+      <mdui-menu-item class="menu-list-tab-2" icon="home">Panel 2</mdui-menu-item>
+      <mdui-menu-item class="menu-list-tab-3" icon="home">Panel 3</mdui-menu-item>
+    </mdui-menu>
+  </mdui-navigation-drawer>
+
+  <mdui-top-app-bar>
+    <mdui-tooltip content="Menu">
+      <mdui-button-icon class="menu-button" icon="menu"></mdui-button-icon>
+    </mdui-tooltip>
+    <mdui-top-app-bar-title>Title</mdui-top-app-bar-title>
     <div style="flex-grow: 1"></div>
-    <mdui-button-icon icon="info" type="button" variant="standard" id="showDialog"></mdui-button-icon>
+
+    <mdui-dropdown trigger="hover">
+      <mdui-button-icon icon="more_vert" slot="trigger"></mdui-button-icon>
+      <mdui-menu>
+        <mdui-menu-item>Item 1</mdui-menu-item>
+        <mdui-menu-item>Item 2</mdui-menu-item>
+      </mdui-menu>
+    </mdui-dropdown>
   </mdui-top-app-bar>
-  <div class="example-label-large-slot" style="padding-top: 112px;">
-    <div style="position: relative;overflow: hidden">
-      <mdui-navigation-bar scroll-behavior="hide" scroll-threshold="30" scroll-target=".example-scroll-behavior" value="item-1">
-        <mdui-navigation-bar-item icon="language" value="item-1">
-          <mdui-badge slot="badge">NEW</mdui-badge>
-        </mdui-navigation-bar-item>
-        <mdui-navigation-bar-item icon="code" value="item-2"></mdui-navigation-bar-item>
-        <mdui-navigation-bar-item icon="person" value="item-3"></mdui-navigation-bar-item>
-      </mdui-navigation-bar>
-      <div class="example-scroll-behavior" style="overflow: auto;">
-        <mdui-tabs value="tab-1" full-width>
-          <mdui-tab value="tab-1">
-            Web
-            <mdui-badge slot="badge">99+</mdui-badge>
-          </mdui-tab>
-          <mdui-tab value="tab-2">Code</mdui-tab>
-          <mdui-tab value="tab-3">Team</mdui-tab>
-          <mdui-tab-panel slot="panel" value="tab-1">
-            <div class="grid" id="content"></div>
-          </mdui-tab-panel>
-          <mdui-tab-panel slot="panel" value="tab-2">
-            <div>Hello,World!</div>
-          </mdui-tab-panel>
-          <mdui-tab-panel slot="panel" value="tab-3">
-            <div>Hello,World!!</div>
-          </mdui-tab-panel>
-        </mdui-tabs>
-      </div>
-    </div>
-  </div>
-</div>
+
+  <mdui-layout-main class="layout-main">
+    <mdui-tabs value="home" full-width>
+      <mdui-tab value="home" hidden></mdui-tab>
+      <mdui-tab value="tab-2" hidden></mdui-tab>
+      <mdui-tab value="tab-3" hidden></mdui-tab>
+
+      <mdui-tab-panel slot="panel" value="home">
+        Home
+      </mdui-tab-panel>
+      <mdui-tab-panel slot="panel" value="tab-2">
+        Panel 2
+      </mdui-tab-panel>
+      <mdui-tab-panel slot="panel" value="tab-3">
+        Panel 3
+      </mdui-tab-panel>
+    </mdui-tabs>
+  </mdui-layout-main>
+</mdui-layout>
 <script type="module" src="/src/main.ts"></script>
 </body>
 </html>
