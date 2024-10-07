@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN" class="mdui-theme-auto">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"/>
   <link rel="shortcut icon" type="image/png" href="/117618367.png"/>
-  <title>AndroidIDE</title>
+  <title template="title"></title>
   <link rel="stylesheet" href="/node_modules/mdui/mdui.css"/>
   <link rel="stylesheet" href="/style.css"/>
   <script type="module" src="/src/lang/lang.ts"></script>
@@ -13,11 +12,14 @@
 <body>
 <mdui-layout class="root-contained">
   <mdui-navigation-drawer class="navigation-drawer" contained>
-    <mdui-menu class="navigation-drawer-list">
+    <div id="menu-close" style="text-align: right;">
+      <mdui-button-icon class="menu-close" icon="close"></mdui-button-icon>
+    </div>
+    <mdui-list class="navigation-drawer-list">
       <mdui-menu-item class="menu-list-home" icon="home">Home</mdui-menu-item>
       <mdui-menu-item class="menu-list-tab-2" icon="home">Panel 2</mdui-menu-item>
       <mdui-menu-item class="menu-list-tab-3" icon="home">Panel 3</mdui-menu-item>
-    </mdui-menu>
+    </mdui-list>
   </mdui-navigation-drawer>
 
   <mdui-top-app-bar>
@@ -55,5 +57,6 @@
   </mdui-layout-main>
 </mdui-layout>
 <script type="module" src="/src/main.ts"></script>
+<script type="module" src="/src/lang/loadLocale.ts"></script>
 </body>
 </html>

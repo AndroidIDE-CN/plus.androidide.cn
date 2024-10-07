@@ -3,7 +3,7 @@ import { setColorScheme } from 'mdui/functions/setColorScheme'
 import 'mdui'
 import { alert } from 'mdui/functions/alert'
 
-import { CUSTOM_THEME_COLOR, TEMPLATE } from './config.ts';
+import { CUSTOM_THEME_COLOR } from './config.ts';
 import { NavigationDrawer, Tabs } from 'mdui';
 
 /**
@@ -34,12 +34,18 @@ const menuClick = (tab: string) => {
 
 const init = (): void => {
   console.log('Start init Website')
-  document.querySelector('title')!.innerHTML = TEMPLATE.title
   if (CUSTOM_THEME_COLOR) setColorScheme(CUSTOM_THEME_COLOR)
   let rootContained = document.querySelector('.root-contained') as Element
   let navigationDrawer = rootContained.querySelector("mdui-navigation-drawer") as NavigationDrawer
   let menuButton = rootContained.querySelector(".menu-button") as Element
+  let closeDiv = document.getElementById("menu-close") as HTMLElement
+  let closeButton = rootContained.querySelector(".menu-close") as Element
   menuButton.addEventListener("click", () => navigationDrawer.open = !navigationDrawer.open)
+  closeButton.addEventListener("click", () => navigationDrawer.open = false)
+
+  window.addEventListener("resize", () => {
+    closeDiv.hidden = window.innerWidth >= 840
+  })
 
   let homeTab = rootContained.querySelector(".menu-list-home") as Element
   let tab2 = rootContained.querySelector(".menu-list-tab-2") as Element

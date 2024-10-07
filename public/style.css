@@ -30,9 +30,12 @@ body {
 }
 
 .layout-main,
-.navigation-drawer,
-.navigation-drawer-list {
+.navigation-drawer {
     height: 100vh;
+}
+
+.navigation-drawer-list {
+    width: 100%!important;
 }
 
 .layout-main {
