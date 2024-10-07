@@ -12,7 +12,7 @@ jobs:
     steps:
       # 检出代码
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4.2.0
 
       # 设置 Node.js 20 环境
       - name: Setup Node.js
@@ -26,7 +26,7 @@ jobs:
 
       # 执行构建 (tsc && vite build)
       - name: Build project
-        run: npm run build
+        run: tsc && vite build
 
       # 上传到 FTP 根目录
       - name: Deploy to FTP
@@ -35,5 +35,5 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./dist
+          local-dir: ./dist/
           server-dir: /
