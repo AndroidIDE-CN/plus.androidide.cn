@@ -27,7 +27,14 @@
       <mdui-button-icon class="menu-button" icon="menu"></mdui-button-icon>
     </mdui-tooltip>
     <mdui-top-app-bar-title>Title</mdui-top-app-bar-title>
-    <div style="flex-grow: 1"></div>
+
+    <mdui-dropdown trigger="hover">
+      <mdui-button-icon icon="translate" slot="trigger"></mdui-button-icon>
+      <mdui-menu selects="single" value="zh-cn">
+        <mdui-menu-item value="zh-cn">简体中文</mdui-menu-item>
+        <mdui-menu-item value="en-us">English</mdui-menu-item>
+      </mdui-menu>
+    </mdui-dropdown>
 
     <mdui-dropdown trigger="hover">
       <mdui-button-icon icon="more_vert" slot="trigger"></mdui-button-icon>
