@@ -30,7 +30,7 @@ jobs:
 
       # 上传到 FTP 根目录
       - name: Deploy to FTP
-        uses: SamKirkland/FTP-Deploy-Action@4.5.0
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
