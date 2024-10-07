@@ -4,10 +4,11 @@ import 'mdui'
 import { alert } from 'mdui/functions/alert'
 
 import { CUSTOM_THEME_COLOR } from './config.ts';
-import { Menu, NavigationDrawer, Tabs } from 'mdui';
+import { Menu, NavigationDrawer, Tabs, TopAppBarTitle } from 'mdui';
 import { Utils } from './utils.ts';
-import { changeLanguage } from './lang/lang.ts';
+import { changeLanguage, getLanguageTemplate } from './lang/lang.ts';
 import { LocaleCode } from 'mdui/internal/localize';
+const rootContained = document.querySelector('.root-contained') as Element
 
 /**
  * 显示对话框
@@ -31,12 +32,13 @@ export const showDialog = (
 }
 
 /** 菜单点击事件 */
-const menuClick = (tab: string) => {
+const menuClick = (title: string, tab: string) => {
+  let topBarTitle = rootContained.querySelector("mdui-top-app-bar-title") as TopAppBarTitle
+  console.log(tab)
+  topBarTitle.innerHTML = title
   let tabs = document.querySelector("mdui-tabs") as Tabs
   tabs.value = tab
 }
-
-const rootContained = document.querySelector('.root-contained') as Element
 
 /** 初始化侧滑栏和菜单 */
 const initMenu = () => {
@@ -56,9 +58,15 @@ const initMenu = () => {
   let tab2 = rootContained.querySelector(".menu-list-tab-2") as Element
   let tab3 = rootContained.querySelector(".menu-list-tab-3") as Element
 
-  homeTab.addEventListener("click", () => {menuClick('home')})
-  tab2.addEventListener("click", () => {menuClick('tab-2')})
-  tab3.addEventListener("click", () => {menuClick('tab-3')})
+  homeTab.addEventListener("click", () => {
+    menuClick(getLanguageTemplate()['home'], 'home')
+  })
+  tab2.addEventListener("click", () => {
+    menuClick(tab2.innerHTML, 'tab-2')
+  })
+  tab3.addEventListener("click", () => {
+    menuClick(tab3.innerHTML, 'tab-3')
+  })
 }
 
 const setLocale = (locale: string) => {

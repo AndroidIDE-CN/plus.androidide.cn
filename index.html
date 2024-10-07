@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"/>
   <link rel="shortcut icon" type="image/png" href="/117618367.png"/>
   <title template="title"></title>
+  <link rel="stylesheet" href="/style.css"/>
   <script type="module" src="/src/lang/lang.ts"></script>
   <script type="module" src="/src/lang/loadLocale.ts"></script>
-  <link rel="stylesheet" href="/style.css"/>
+  <script type="module" src="/src/main.ts"></script>
 </head>
 <body>
 <mdui-layout class="root-contained">
@@ -16,7 +17,7 @@
       <mdui-button-icon class="menu-close" icon="close"></mdui-button-icon>
     </div>
     <mdui-list class="navigation-drawer-list">
-      <mdui-menu-item class="menu-list-home" icon="home" template="menuHome"></mdui-menu-item>
+      <mdui-menu-item class="menu-list-home" icon="home" template="home"></mdui-menu-item>
       <mdui-menu-item class="menu-list-tab-2" icon="home">Panel 2</mdui-menu-item>
       <mdui-menu-item class="menu-list-tab-3" icon="home">Panel 3</mdui-menu-item>
     </mdui-list>
@@ -24,7 +25,7 @@
 
   <mdui-top-app-bar>
     <mdui-button-icon class="menu-button" icon="menu"></mdui-button-icon>
-    <mdui-top-app-bar-title template="topBarTitle"></mdui-top-app-bar-title>
+    <mdui-top-app-bar-title template="home"></mdui-top-app-bar-title>
 
     <mdui-dropdown trigger="hover">
       <mdui-button-icon icon="translate" slot="trigger"></mdui-button-icon>
@@ -49,12 +50,11 @@
       <mdui-tab value="tab-2" hidden></mdui-tab>
       <mdui-tab value="tab-3" hidden></mdui-tab>
 
-      <mdui-tab-panel slot="panel" value="home"></mdui-tab-panel>
+      <mdui-tab-panel slot="panel" value="home" template="home"></mdui-tab-panel>
       <mdui-tab-panel slot="panel" value="tab-2">Panel 2</mdui-tab-panel>
       <mdui-tab-panel slot="panel" value="tab-3">Panel 3</mdui-tab-panel>
     </mdui-tabs>
   </mdui-layout-main>
 </mdui-layout>
-<script type="module" src="/src/main.ts"></script>
 </body>
 </html>
