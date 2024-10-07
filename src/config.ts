@@ -1,13 +1,8 @@
-import { Templates } from './lang/templates.ts';
-import getLanguageTemplate from './lang/lang.ts';
-
 interface Config {
     WEB_LIST: any[]
     LIST: number[]
     /** 颜色主题，null 为默认主题色 */
     CUSTOM_THEME_COLOR: string|null
-    /** 多语言模板 */
-    TEMPLATE: Templates
 }
 
 const config: Config = {
@@ -30,9 +25,7 @@ const config: Config = {
         756153568,
         843243800
     ],
-    CUSTOM_THEME_COLOR: '#0061a4',
-    TEMPLATE: getLanguageTemplate()
+    CUSTOM_THEME_COLOR: '#0061a4'
 }
 
-export const { WEB_LIST, LIST, CUSTOM_THEME_COLOR, TEMPLATE } = config
-export default config
+export const { WEB_LIST, LIST, CUSTOM_THEME_COLOR } = config

@@ -1,9 +1,13 @@
+import 'mdui/mdui.css'
+
 import { setLocale } from 'mdui/functions/setLocale'
 import { LocaleCode } from 'mdui/internal/localize'
 
 import * as zh_CN from './zh-cn.ts'
 import * as en_US from './en-us.ts'
-import { loadLocale } from 'mdui';
+import { loadLocale } from 'mdui'
+import { Utils } from '../utils.ts'
+import loadTemplate from './loadLocale.ts';
 
 const list = new Map(
   [
@@ -14,42 +18,20 @@ const list = new Map(
 
 /** 切换语言 */
 export const changeLanguage = (language: LocaleCode) => {
-  document.cookie = `locale=${language}; path=/; max-age=31536000`
-  // @ts-ignore
-  loadLocale(async (locale: LocaleCode) => list.get(language))
+  try {
+    loadLocale(async () => zh_CN)
+  } catch (error) {}
   setLocale(language).then(() => {
-    console.log(`Language changed to ${getLocale()}`)
+    loadTemplate()
+    console.log(`Language changed to ${Utils.getLanguage()}`)
   })
-}
-
-/** 获取当前语言 */
-const getLanguage = (): LocaleCode => {
-  let locale = getLocale() as LocaleCode
-  return (locale.startsWith('en')) ? 'en-us' as LocaleCode : locale
-}
-
-const getLocale = () => {
-  return (getCookieValue('locale') ?? navigator.language.toLowerCase()) as LocaleCode
 }
 
 /** 获取当前语言模板 */
 export const getLanguageTemplate = () => {
   // @ts-ignore
-  return (list.get(getLanguage()).templates) ?? zh_CN.templates
+  return (list.get(Utils.getLanguage()).templates) ?? zh_CN.templates
 }
 
-const getCookieValue = (cookieName: string) =>  {
-  let name = cookieName + "=";
-  let decodedCookie = decodeURIComponent(document.cookie);
-  let cookieArray = decodedCookie.split(';');
-  for(var i = 0; i < cookieArray.length; i++) {
-    let currentCookie = cookieArray[i].trim();
-    if (currentCookie.indexOf(name) === 0) {
-      return currentCookie.substring(name.length, currentCookie.length);
-    }
-  }
-  return null;
-}
-
-changeLanguage(getLocale())
+changeLanguage(Utils.getLanguage())
 export default getLanguageTemplate

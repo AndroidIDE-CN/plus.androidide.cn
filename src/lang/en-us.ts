@@ -2,4 +2,6 @@ import {Templates} from './templates.ts';
 
 export const templates: Templates = {
   title: 'AIDE Plus',
+  topBarTitle: 'Home',
+  menuHome: 'Home',
 }
