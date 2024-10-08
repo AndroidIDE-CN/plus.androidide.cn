@@ -44,15 +44,9 @@ const menuClick = (title: string, tab: string) => {
 const initMenu = () => {
   let navigationDrawer = rootContained.querySelector("mdui-navigation-drawer") as NavigationDrawer
   let menuButton = rootContained.querySelector(".menu-button") as Element
-  let closeDiv = document.getElementById("menu-close") as HTMLElement
-  let closeButton = rootContained.querySelector(".menu-close") as Element
 
+  navigationDrawer.addEventListener("overlay-click", () => navigationDrawer.open = false)
   menuButton.addEventListener("click", () => navigationDrawer.open = !navigationDrawer.open)
-  closeButton.addEventListener("click", () => navigationDrawer.open = false)
-  closeDiv.hidden = window.innerWidth >= 840
-  window.addEventListener("resize", () => {
-    closeDiv.hidden = window.innerWidth >= 840
-  })
 
   let homeTab = rootContained.querySelector(".menu-list-home") as Element
   let tab2 = rootContained.querySelector(".menu-list-tab-2") as Element
