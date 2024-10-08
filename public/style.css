@@ -31,7 +31,7 @@ body {
 
 .layout-main {
     margin: 20px !important;
-    margin-bottom: 30px !important;
+    padding-bottom: 100px !important;
 }
 
 .footer-content-text {
