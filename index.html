@@ -1,57 +1,66 @@
 <!DOCTYPE html>
 <html lang="zh-CN" class="mdui-theme-auto">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"/>
-  <link rel="shortcut icon" type="image/png" href="/117618367.png"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
+  <link rel="shortcut icon" type="image/png" href="/117618367.png" />
   <title template="title"></title>
-  <link rel="stylesheet" href="/style.css"/>
+  <link rel="stylesheet" href="/style.css" />
   <script type="module" src="/src/lang/lang.ts"></script>
   <script type="module" src="/src/lang/loadLocale.ts"></script>
   <script type="module" src="/src/main.ts"></script>
 </head>
 <body>
-<mdui-layout class="root-contained">
-  <mdui-navigation-drawer class="navigation-drawer" contained>
-    <mdui-list class="navigation-drawer-list">
-      <mdui-menu-item class="menu-list-home" icon="home" template="home"></mdui-menu-item>
-      <mdui-menu-item class="menu-list-tab-2" icon="home">Panel 2</mdui-menu-item>
-      <mdui-menu-item class="menu-list-tab-3" icon="home">Panel 3</mdui-menu-item>
-    </mdui-list>
-  </mdui-navigation-drawer>
+<div class="root-div">
+  <mdui-bottom-app-bar scroll-target=".layout-main" scroll-behavior="hide" scroll-threshold="30">
+    <span class="footer-content-text">
+      Copyright © 2024 <a class="footer-content-text" href="https://github.com/hujiayucc" target="_blank">hujiayucc</a> All Rights Reserved.
+    </span>
+  </mdui-bottom-app-bar>
+  <mdui-layout class="root-contained">
+    <mdui-navigation-drawer class="navigation-drawer" contained>
+      <mdui-list class="navigation-drawer-list">
+        <mdui-menu-item class="menu-list-home" icon="home" template="home"></mdui-menu-item>
+        <mdui-menu-item class="menu-list-tab-2" icon="home">Panel 2</mdui-menu-item>
+        <mdui-menu-item class="menu-list-tab-3" icon="home">Panel 3</mdui-menu-item>
+      </mdui-list>
+    </mdui-navigation-drawer>
 
-  <mdui-top-app-bar>
-    <mdui-button-icon class="menu-button" icon="menu"></mdui-button-icon>
-    <mdui-top-app-bar-title template="home"></mdui-top-app-bar-title>
+    <mdui-top-app-bar scroll-behavior="elevate" scroll-target=".layout-main">
+      <mdui-button-icon class="menu-button" icon="menu"></mdui-button-icon>
+      <mdui-top-app-bar-title template="home"></mdui-top-app-bar-title>
 
-    <mdui-dropdown trigger="hover">
-      <mdui-button-icon icon="translate" slot="trigger"></mdui-button-icon>
-      <mdui-menu class="menu-transition" selects="single">
-        <mdui-menu-item value="zh-cn">简体中文</mdui-menu-item>
-        <mdui-menu-item value="en-us">English</mdui-menu-item>
-      </mdui-menu>
-    </mdui-dropdown>
+      <mdui-dropdown trigger="hover">
+        <mdui-button-icon icon="translate" slot="trigger"></mdui-button-icon>
+        <mdui-menu class="menu-transition" selects="single">
+          <mdui-menu-item value="zh-cn">简体中文</mdui-menu-item>
+          <mdui-menu-item value="en-us">English</mdui-menu-item>
+        </mdui-menu>
+      </mdui-dropdown>
 
-    <mdui-dropdown trigger="hover">
-      <mdui-button-icon icon="more_vert" slot="trigger"></mdui-button-icon>
-      <mdui-menu>
-        <mdui-menu-item>Item 1</mdui-menu-item>
-        <mdui-menu-item>Item 2</mdui-menu-item>
-      </mdui-menu>
-    </mdui-dropdown>
-  </mdui-top-app-bar>
+      <mdui-dropdown trigger="hover">
+        <mdui-button-icon icon="more_vert" slot="trigger"></mdui-button-icon>
+        <mdui-menu>
+          <mdui-menu-item>Item 1</mdui-menu-item>
+          <mdui-menu-item>Item 2</mdui-menu-item>
+        </mdui-menu>
+      </mdui-dropdown>
+    </mdui-top-app-bar>
 
-  <mdui-layout-main class="layout-main">
-    <mdui-tabs value="home" full-width>
-      <mdui-tab value="home" hidden></mdui-tab>
-      <mdui-tab value="tab-2" hidden></mdui-tab>
-      <mdui-tab value="tab-3" hidden></mdui-tab>
+    <mdui-layout-main class="layout-main hide-scrollbar">
+      <mdui-tabs value="home" full-width>
+        <mdui-tab value="home" hidden></mdui-tab>
+        <mdui-tab value="tab-2" hidden></mdui-tab>
+        <mdui-tab value="tab-3" hidden></mdui-tab>
 
-      <mdui-tab-panel slot="panel" value="home" template="home"></mdui-tab-panel>
-      <mdui-tab-panel slot="panel" value="tab-2">Panel 2</mdui-tab-panel>
-      <mdui-tab-panel slot="panel" value="tab-3">Panel 3</mdui-tab-panel>
-    </mdui-tabs>
-  </mdui-layout-main>
-</mdui-layout>
+        <mdui-tab-panel slot="panel" value="home">
+          Start<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>End
+        </mdui-tab-panel>
+        <mdui-tab-panel slot="panel" value="tab-2">Panel 2</mdui-tab-panel>
+        <mdui-tab-panel slot="panel" value="tab-3">Panel 3</mdui-tab-panel>
+      </mdui-tabs>
+    </mdui-layout-main>
+  </mdui-layout>
+</div>
 </body>
 </html>
