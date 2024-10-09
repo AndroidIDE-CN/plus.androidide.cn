@@ -24,15 +24,19 @@ body {
     -webkit-font-feature-settings: 'liga';
     -webkit-font-smoothing: antialiased;
 }
-.root-contained,
-.navigation-drawer {
+.root-contained {
     height: 100vh;
+}
+
+.navigation-drawer,
+.navigation-drawer-list {
+    height: 100%;
 }
 
 .layout-main {
     margin-top: 20px!important;
-    padding-left: 20px!important;
-    padding-right: 20px!important;
+    margin-left: 20px!important;
+    margin-right: 20px!important;
 }
 
 .footer-content-text {

@@ -12,20 +12,7 @@
 </head>
 <body>
 <div class="root-div">
-  <mdui-bottom-app-bar scroll-target=".layout-main" scroll-behavior="hide" scroll-threshold="30">
-    <span class="footer-content-text">
-      Copyright © 2024 <a class="footer-content-text" href="https://github.com/hujiayucc" target="_blank">hujiayucc</a> All Rights Reserved.
-    </span>
-  </mdui-bottom-app-bar>
   <mdui-layout class="root-contained">
-    <mdui-navigation-drawer class="navigation-drawer" contained>
-      <mdui-list class="navigation-drawer-list">
-        <mdui-menu-item class="menu-list-home" icon="home" template="home"></mdui-menu-item>
-        <mdui-menu-item class="menu-list-tab-2" icon="home">Panel 2</mdui-menu-item>
-        <mdui-menu-item class="menu-list-tab-3" icon="home">Panel 3</mdui-menu-item>
-      </mdui-list>
-    </mdui-navigation-drawer>
-
     <mdui-top-app-bar scroll-behavior="elevate" scroll-target=".layout-main">
       <mdui-button-icon class="menu-button" icon="menu"></mdui-button-icon>
       <mdui-top-app-bar-title template="home"></mdui-top-app-bar-title>
@@ -46,21 +33,62 @@
         </mdui-menu>
       </mdui-dropdown>
     </mdui-top-app-bar>
+    <mdui-navigation-drawer class="navigation-drawer" contained>
+      <mdui-menu class="navigation-drawer-list">
+        <mdui-menu-item class="menu-list-home" icon="home" template="home"></mdui-menu-item>
+        <mdui-menu-item class="menu-list-feature" icon="home" template="feature"></mdui-menu-item>
+        <mdui-menu-item class="menu-list-about" icon="home" template="about"></mdui-menu-item>
+      </mdui-menu>
+    </mdui-navigation-drawer>
 
     <mdui-layout-main class="layout-main hide-scrollbar">
       <mdui-tabs value="home" full-width>
         <mdui-tab value="home" hidden></mdui-tab>
-        <mdui-tab value="tab-2" hidden></mdui-tab>
-        <mdui-tab value="tab-3" hidden></mdui-tab>
+        <mdui-tab value="feature" hidden></mdui-tab>
+        <mdui-tab value="about" hidden></mdui-tab>
 
-        <mdui-tab-panel slot="panel" value="home">
-          Start<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>Panel 2<br>End
+        <mdui-tab-panel class="tab-home" slot="panel" value="home">
+          <script type="module">
+            import { marked } from 'marked'
+            import { rootContained } from '/src/main.ts'
+            let home = rootContained.querySelector('.tab-home')
+            let md = "# Hello World!\n## Welcome AIDE Plus Official Website!"
+            for (let i = 0; i < 100; i++) {
+              md += `\n### ${i + 1}`
+            }
+            home.innerHTML = marked.parse(md)
+          </script>
         </mdui-tab-panel>
-        <mdui-tab-panel slot="panel" value="tab-2">Panel 2</mdui-tab-panel>
-        <mdui-tab-panel slot="panel" value="tab-3">Panel 3</mdui-tab-panel>
+        <mdui-tab-panel class="tab-feature" slot="panel" value="feature">
+          <script type="module">
+            import { marked } from 'marked'
+            import { rootContained } from '/src/main.ts'
+            let feature = rootContained.querySelector('.tab-feature')
+            let md = '# Version Features\n## This is a feature of AIDE Plus!\n';
+            for (let i = 0; i < 100; i++) {
+              md += `- ${i + 1}\n`
+            }
+            feature.innerHTML = marked.parse(md)
+          </script>
+        </mdui-tab-panel>
+        <mdui-tab-panel class="tab-about" slot="panel" value="about">
+          <script type="module">
+            import { marked } from 'marked'
+            import { rootContained } from '/src/main.ts'
+            let feature = rootContained.querySelector('.tab-about')
+            let md = "# About Us\n- Github: [hujiayucc](https://github.com/hujiayucc)\n"
+            md += "- Email: [hujiayucc@gmail.com](mailto:hujiayucc@gmail.com)"
+            feature.innerHTML = marked.parse(md)
+          </script>
+        </mdui-tab-panel>
       </mdui-tabs>
     </mdui-layout-main>
   </mdui-layout>
+  <mdui-bottom-app-bar scroll-target=".layout-main" scroll-behavior="hide" scroll-threshold="30">
+    <span class="footer-content-text">
+      Copyright © 2024 <a class="footer-content-text" href="https://github.com/hujiayucc" target="_blank">hujiayucc</a> All Rights Reserved.
+    </span>
+  </mdui-bottom-app-bar>
 </div>
 </body>
 </html>

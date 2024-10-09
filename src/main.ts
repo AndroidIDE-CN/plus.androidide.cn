@@ -8,7 +8,7 @@ import { Menu, NavigationDrawer, Tabs, TopAppBarTitle } from 'mdui';
 import { Utils } from './utils.ts';
 import { changeLanguage, getLanguageTemplate } from './lang/lang.ts';
 import { LocaleCode } from 'mdui/internal/localize';
-const rootContained = document.querySelector('.root-contained') as Element
+export const rootContained = document.querySelector('.root-contained') as Element
 
 /**
  * 显示对话框
@@ -36,7 +36,7 @@ const menuClick = (title: string, tab: string) => {
   let topBarTitle = rootContained.querySelector("mdui-top-app-bar-title") as TopAppBarTitle
   console.log(tab)
   topBarTitle.innerHTML = title
-  let tabs = document.querySelector("mdui-tabs") as Tabs
+  let tabs = rootContained.querySelector("mdui-tabs") as Tabs
   tabs.value = tab
 }
 
@@ -49,17 +49,26 @@ const initMenu = () => {
   menuButton.addEventListener("click", () => navigationDrawer.open = !navigationDrawer.open)
 
   let homeTab = rootContained.querySelector(".menu-list-home") as Element
-  let tab2 = rootContained.querySelector(".menu-list-tab-2") as Element
-  let tab3 = rootContained.querySelector(".menu-list-tab-3") as Element
+  let featureTab = rootContained.querySelector(".menu-list-feature") as Element
+  let aboutTab = rootContained.querySelector(".menu-list-about") as Element
 
   homeTab.addEventListener("click", () => {
     menuClick(getLanguageTemplate()['home'], 'home')
   })
-  tab2.addEventListener("click", () => {
-    menuClick(tab2.innerHTML, 'tab-2')
+  featureTab.addEventListener("click", () => {
+    menuClick(getLanguageTemplate()['feature'], 'feature')
   })
-  tab3.addEventListener("click", () => {
-    menuClick(tab3.innerHTML, 'tab-3')
+  aboutTab.addEventListener("click", () => {
+    menuClick(getLanguageTemplate()['about'], 'about')
+  })
+
+  let menuTransition = rootContained.querySelector(".menu-transition") as Menu
+
+  menuTransition.value = Utils.getLanguage()
+  menuTransition.addEventListener("change", (e: any) => {
+    let locale = e.target.value
+    if (locale && locale !== Utils.getLanguage())
+      setLocale(e.target.value)
   })
 }
 
@@ -72,15 +81,6 @@ const init = (): void => {
   console.log('Start init Website')
   if (CUSTOM_THEME_COLOR) setColorScheme(CUSTOM_THEME_COLOR)
   initMenu()
-
-  let menuTransition = rootContained.querySelector(".menu-transition") as Menu
-
-  menuTransition.value = Utils.getLanguage()
-  menuTransition.addEventListener("change", (e: any) => {
-    let locale = e.target.value
-    if (locale && locale !== Utils.getLanguage())
-    setLocale(e.target.value)
-  })
 
   console.log('End init Website')
 }

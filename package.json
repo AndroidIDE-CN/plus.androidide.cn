@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "mdui": "^2.1.2",
-    "@mdui/icons": "^1.0.2"
+    "marked": "^14.1.2"
   },
   "devDependencies": {
     "typescript": "^5.2.2",
