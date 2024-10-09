@@ -9,6 +9,7 @@ import { Utils } from './utils.ts';
 import { changeLanguage, getLanguageTemplate } from './lang/lang.ts';
 import { LocaleCode } from 'mdui/internal/localize';
 export const rootContained = document.querySelector('.root-contained') as Element
+let navigationDrawer = rootContained.querySelector("mdui-navigation-drawer") as NavigationDrawer
 
 /**
  * 显示对话框
@@ -38,11 +39,11 @@ const menuClick = (title: string, tab: string) => {
   topBarTitle.innerHTML = title
   let tabs = rootContained.querySelector("mdui-tabs") as Tabs
   tabs.value = tab
+  navigationDrawer.open = false
 }
 
 /** 初始化侧滑栏和菜单 */
 const initMenu = () => {
-  let navigationDrawer = rootContained.querySelector("mdui-navigation-drawer") as NavigationDrawer
   let menuButton = rootContained.querySelector(".menu-button") as Element
 
   navigationDrawer.addEventListener("overlay-click", () => navigationDrawer.open = false)
