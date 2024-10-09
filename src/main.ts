@@ -39,7 +39,7 @@ const menuClick = (title: string, tab: string) => {
   topBarTitle.innerHTML = title
   let tabs = rootContained.querySelector("mdui-tabs") as Tabs
   tabs.value = tab
-  navigationDrawer.open = false
+  if (window.innerWidth < 840) navigationDrawer.open = false
 }
 
 /** 初始化侧滑栏和菜单 */
