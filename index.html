@@ -47,7 +47,7 @@
         <mdui-tab value="feature" hidden></mdui-tab>
         <mdui-tab value="about" hidden></mdui-tab>
 
-        <mdui-tab-panel class="tab-home" slot="panel" value="home">
+        <mdui-tab-panel class="tab-home markdown-content" slot="panel" value="home">
           <script type="module">
             import { marked } from 'marked'
             import { rootContained } from '/src/main.ts'
@@ -59,7 +59,7 @@
             home.innerHTML = marked.parse(md)
           </script>
         </mdui-tab-panel>
-        <mdui-tab-panel class="tab-feature" slot="panel" value="feature">
+        <mdui-tab-panel class="tab-feature markdown-content" slot="panel" value="feature">
           <script type="module">
             import { marked } from 'marked'
             import { rootContained } from '/src/main.ts'
@@ -71,7 +71,7 @@
             feature.innerHTML = marked.parse(md)
           </script>
         </mdui-tab-panel>
-        <mdui-tab-panel class="tab-about" slot="panel" value="about">
+        <mdui-tab-panel class="tab-about markdown-content" slot="panel" value="about">
           <script type="module">
             import { marked } from 'marked'
             import { rootContained } from '/src/main.ts'

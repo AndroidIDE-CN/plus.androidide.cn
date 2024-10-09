@@ -24,6 +24,7 @@ body {
     -webkit-font-feature-settings: 'liga';
     -webkit-font-smoothing: antialiased;
 }
+
 .root-contained {
     height: 100vh;
 }
@@ -33,10 +34,19 @@ body {
     height: 100%;
 }
 
-.layout-main {
+.navigation-drawer-list {
+    background: transparent;
+}
+
+.markdown-content {
     margin-top: 20px!important;
     margin-left: 20px!important;
     margin-right: 20px!important;
+}
+
+.layout-main {
+    width: 100%;
+    height: 100%;
 }
 
 .footer-content-text {
