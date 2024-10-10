@@ -1,94 +1,13 @@
 <!DOCTYPE html>
-<html lang="zh-CN" class="mdui-theme-auto">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
-  <link rel="shortcut icon" type="image/png" href="/117618367.png" />
-  <title template="title"></title>
-  <link rel="stylesheet" href="/style.css" />
-  <script type="module" src="/src/lang/lang.ts"></script>
-  <script type="module" src="/src/lang/loadLocale.ts"></script>
-  <script type="module" src="/src/main.ts"></script>
-</head>
-<body>
-<div class="root-div">
-  <mdui-layout class="root-contained">
-    <mdui-top-app-bar scroll-behavior="elevate" scroll-target=".layout-main">
-      <mdui-button-icon class="menu-button" icon="menu"></mdui-button-icon>
-      <mdui-top-app-bar-title template="home"></mdui-top-app-bar-title>
-
-      <mdui-dropdown trigger="hover">
-        <mdui-button-icon icon="translate" slot="trigger"></mdui-button-icon>
-        <mdui-menu class="menu-transition" selects="single">
-          <mdui-menu-item value="zh-cn">简体中文</mdui-menu-item>
-          <mdui-menu-item value="en-us">English</mdui-menu-item>
-        </mdui-menu>
-      </mdui-dropdown>
-
-      <mdui-dropdown trigger="hover">
-        <mdui-button-icon icon="more_vert" slot="trigger"></mdui-button-icon>
-        <mdui-menu>
-          <mdui-menu-item>Item 1</mdui-menu-item>
-          <mdui-menu-item>Item 2</mdui-menu-item>
-        </mdui-menu>
-      </mdui-dropdown>
-    </mdui-top-app-bar>
-    <mdui-navigation-drawer class="navigation-drawer" contained>
-      <mdui-list class="navigation-drawer-list">
-        <mdui-menu-item class="menu-list-home" icon="home" template="home"></mdui-menu-item>
-        <mdui-menu-item class="menu-list-feature" icon="featured_play_list" template="feature"></mdui-menu-item>
-        <mdui-menu-item class="menu-list-about" icon="alternate_email" template="about"></mdui-menu-item>
-      </mdui-list>
-    </mdui-navigation-drawer>
-
-    <mdui-layout-main class="layout-main hide-scrollbar">
-      <mdui-tabs value="home" full-width>
-        <mdui-tab value="home" hidden></mdui-tab>
-        <mdui-tab value="feature" hidden></mdui-tab>
-        <mdui-tab value="about" hidden></mdui-tab>
-
-        <mdui-tab-panel class="tab-home markdown-content" slot="panel" value="home">
-          <script type="module">
-            import { marked } from 'marked'
-            import { rootContained } from '/src/main.ts'
-            let home = rootContained.querySelector('.tab-home')
-            let md = "# Hello World!\n## Welcome AIDE Plus Official Website!"
-            for (let i = 0; i < 100; i++) {
-              md += `\n### ${i + 1}`
-            }
-            home.innerHTML = marked.parse(md)
-          </script>
-        </mdui-tab-panel>
-        <mdui-tab-panel class="tab-feature markdown-content" slot="panel" value="feature">
-          <script type="module">
-            import { marked } from 'marked'
-            import { rootContained } from '/src/main.ts'
-            let feature = rootContained.querySelector('.tab-feature')
-            let md = '# Version Features\n## This is a feature of AIDE Plus!\n';
-            for (let i = 0; i < 100; i++) {
-              md += `- ${i + 1}\n`
-            }
-            feature.innerHTML = marked.parse(md)
-          </script>
-        </mdui-tab-panel>
-        <mdui-tab-panel class="tab-about markdown-content" slot="panel" value="about">
-          <script type="module">
-            import { marked } from 'marked'
-            import { rootContained } from '/src/main.ts'
-            let feature = rootContained.querySelector('.tab-about')
-            let md = "# About Us\n- Github: [hujiayucc](https://github.com/hujiayucc)\n"
-            md += "- Email: [hujiayucc@gmail.com](mailto:hujiayucc@gmail.com)"
-            feature.innerHTML = marked.parse(md)
-          </script>
-        </mdui-tab-panel>
-      </mdui-tabs>
-    </mdui-layout-main>
-  </mdui-layout>
-  <mdui-bottom-app-bar scroll-target=".layout-main" scroll-behavior="hide" scroll-threshold="30">
-    <span class="footer-content-text">
-      Copyright © 2024 <a class="footer-content-text" href="https://github.com/hujiayucc" target="_blank">hujiayucc</a> All Rights Reserved.
-    </span>
-  </mdui-bottom-app-bar>
-</div>
-</body>
+<html lang="en" class="mdui-theme-auto">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
+    <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+    <title>AIDE Plus</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
 </html>

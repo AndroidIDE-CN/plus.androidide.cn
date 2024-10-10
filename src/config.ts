@@ -25,7 +25,7 @@ const config: Config = {
         756153568,
         843243800
     ],
-    CUSTOM_THEME_COLOR: '#0061a4'
+    CUSTOM_THEME_COLOR: '#ff0000'
 }
 
 export const { WEB_LIST, LIST, CUSTOM_THEME_COLOR } = config

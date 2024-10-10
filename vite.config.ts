@@ -1,8 +1,21 @@
-import { defineConfig } from 'vite';
+import { fileURLToPath, URL } from 'node:url'
+
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 import htmlMinifier from 'vite-plugin-html-minifier-terser'
 
+// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => tag.startsWith('mdui-')
+        }
+      }
+    }),
+    vueJsx(),
     htmlMinifier({
       // HTML 压缩选项
       minify: {
@@ -24,7 +37,6 @@ export default defineConfig({
         drop_debugger: true, // 移除 debugger 语句
         passes: 3, // 进行多轮优化压缩
         toplevel: true, // 压缩顶层作用域
-        booleans_as_integers: true, // 将布尔值压缩为 0 或 1
         dead_code: true, // 移除未使用的代码
         reduce_vars: true, // 压缩和折叠变量
         conditionals: true, // 压缩条件语句
@@ -40,4 +52,9 @@ export default defineConfig({
       },
     },
   },
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url))
+    }
+  }
 })
