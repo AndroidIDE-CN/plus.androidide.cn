@@ -1,30 +1,38 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
+import {RouterView} from 'vue-router'
 import 'mdui/mdui.css'
 import 'mdui'
-import i18n, { changeLan } from "@/lang/i18n"
+import {changeLanguage} from "@/lang/i18n"
 </script>
 
 <script lang="ts">
-import router from "@/router"
 import {CUSTOM_THEME_COLOR} from "@/config"
 import {setColorScheme} from "mdui"
-if (CUSTOM_THEME_COLOR) setColorScheme(CUSTOM_THEME_COLOR)
+import i18n from "@/lang/i18n"
 
+if (CUSTOM_THEME_COLOR) setColorScheme(CUSTOM_THEME_COLOR)
+let path = document.location.pathname.split('/').pop()
+let title = (path) ? `menu.${path}` : 'menu.home'
+document.title = `${i18n.global.t(title)} - AIDE Plus`
 export default {
   data() {
     return {
       isOpen: false,
-      appBarTitle: this.$t('menu.home')
+      appBarTitle: this.$t(title)
     }
   },
   methods: {
-    menuClick() {
+    menuButton() {
       this.isOpen = !this.isOpen
     },
-    menuItemClick(path: string, title: string) {
-      router.push(path)
+    async menuClick(path: string, title: string) {
+      this.$router.push(path).then(() => {
+      }).catch((e) => {
+        console.log(e)
+      })
+      title = this.$t(title)
       this.appBarTitle = title
+      document.title = `${title} - AIDE Plus`
       if (window.innerWidth < 840) this.isOpen = false
     }
   }
@@ -34,13 +42,13 @@ export default {
   <div class="root-div">
     <mdui-layout class="root-contained">
       <mdui-top-app-bar scroll-behavior="elevate" scroll-target=".layout-main">
-        <mdui-button-icon class="menu-button" icon="menu" @click="menuClick"></mdui-button-icon>
+        <mdui-button-icon class="menu-button" icon="menu" @click="menuButton"></mdui-button-icon>
         <mdui-top-app-bar-title>{{ appBarTitle }}</mdui-top-app-bar-title>
         <mdui-dropdown trigger="hover">
           <mdui-button-icon icon="translate" slot="trigger"></mdui-button-icon>
           <mdui-menu class="menu-transition" selects="single" :value="i18n.global.locale.value">
-            <mdui-menu-item value="zh" @click="changeLan('zh')">简体中文</mdui-menu-item>
-            <mdui-menu-item value="en" @click="changeLan('en')">English</mdui-menu-item>
+            <mdui-menu-item value="zh" @click="changeLanguage('zh')">简体中文</mdui-menu-item>
+            <mdui-menu-item value="en" @click="changeLanguage('en')">English</mdui-menu-item>
           </mdui-menu>
         </mdui-dropdown>
 
@@ -54,24 +62,20 @@ export default {
       </mdui-top-app-bar>
       <mdui-navigation-drawer class="navigation-drawer" contained :open="isOpen" @overlay-click="isOpen=false">
         <mdui-list class="navigation-drawer-list">
-          <mdui-menu-item class="menu-list-home" icon="home" @click="menuItemClick('/',$t('menu.home'))">
+          <mdui-menu-item icon="home" @click="menuClick('/','menu.home')">
             {{ $t('menu.home') }}
           </mdui-menu-item>
-          <mdui-menu-item class="menu-list-feature" icon="featured_play_list" @click="menuItemClick('/feature', $t('menu.feature'))">
+          <mdui-menu-item icon="featured_play_list" @click="menuClick('/feature','menu.feature')">
             {{ $t('menu.feature') }}
           </mdui-menu-item>
-          <mdui-menu-item class="menu-list-about" icon="alternate_email" @click="menuItemClick('/about', $t('menu.about'))">
+          <mdui-menu-item icon="alternate_email" @click="menuClick('/about','menu.about')">
             {{ $t('menu.about') }}
           </mdui-menu-item>
         </mdui-list>
       </mdui-navigation-drawer>
 
       <mdui-layout-main class="layout-main hide-scrollbar">
-        <keep-alive>
-          <mdui-layout-main>
-            <RouterView />
-          </mdui-layout-main>
-        </keep-alive>
+        <RouterView/>
       </mdui-layout-main>
     </mdui-layout>
     <mdui-bottom-app-bar scroll-target=".layout-main" scroll-behavior="hide" scroll-threshold="30">
