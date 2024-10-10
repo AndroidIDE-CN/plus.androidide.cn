@@ -72,3 +72,130 @@ body {
 .hide-scrollbar::-webkit-scrollbar {
   display: none; /* 完全隐藏滚动条 */
 }
+
+.icon .filled[data-v-e56655cb],.icon:hover .outlined[data-v-e56655cb] {
+  display: none
+}
+
+.icon:hover .filled[data-v-e56655cb] {
+  display: block
+}
+
+.card[data-v-e56655cb] {
+  padding: 1rem
+}
+
+.color-label[data-v-e56655cb] {
+  cursor: default;
+  color: rgb(var(--mdui-color-on-surface-variant));
+  font-size: var(--mdui-typescale-title-small-size);
+  font-weight: var(--mdui-typescale-title-small-weight);
+  letter-spacing: var(--mdui-typescale-title-small-tracking);
+  line-height: var(--mdui-typescale-title-small-line-height)
+}
+
+.color-label[data-v-e56655cb]:not(:first-child) {
+  margin-top: .5rem
+}
+
+.color-preset[data-v-e56655cb] {
+  display: flex;
+  padding: .5rem 0
+}
+
+.color-preset div[data-v-e56655cb] {
+  cursor: pointer;
+  box-sizing: border-box;
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: var(--mdui-shape-corner-extra-small);
+  border: .0625rem solid rgb(var(--mdui-color-outline))
+}
+
+.color-preset div+div[data-v-e56655cb] {
+  margin-left: .5rem
+}
+
+.color-preset .red[data-v-e56655cb] {
+  background-color: #bb1614
+}
+
+.color-preset .purple[data-v-e56655cb] {
+  background-color: #9a25ae
+}
+
+.color-preset .blue[data-v-e56655cb] {
+  background-color: #0061a4
+}
+
+.color-preset .green[data-v-e56655cb] {
+  background-color: #006e1c
+}
+
+.color-preset .yellow[data-v-e56655cb] {
+  background-color: #695f00
+}
+
+.color-preset .grey[data-v-e56655cb] {
+  background-color: #006874
+}
+
+.mdui-theme-dark .color-preset .red[data-v-e56655cb] {
+  background-color: #ffb4aa
+}
+
+.mdui-theme-dark .color-preset .purple[data-v-e56655cb] {
+  background-color: #f9abff
+}
+
+.mdui-theme-dark .color-preset .blue[data-v-e56655cb] {
+  background-color: #9ecaff
+}
+
+.mdui-theme-dark .color-preset .green[data-v-e56655cb] {
+  background-color: #78dc77
+}
+
+.mdui-theme-dark .color-preset .yellow[data-v-e56655cb] {
+  background-color: #dbc90a
+}
+
+.mdui-theme-dark .color-preset .grey[data-v-e56655cb] {
+  background-color: #4fd8eb
+}
+
+@media (prefers-color-scheme: dark) {
+  .mdui-theme-auto .color-preset .red[data-v-e56655cb] {
+    background-color:#ffb4aa
+  }
+
+  .mdui-theme-auto .color-preset .purple[data-v-e56655cb] {
+    background-color: #f9abff
+  }
+
+  .mdui-theme-auto .color-preset .blue[data-v-e56655cb] {
+    background-color: #9ecaff
+  }
+
+  .mdui-theme-auto .color-preset .green[data-v-e56655cb] {
+    background-color: #78dc77
+  }
+
+  .mdui-theme-auto .color-preset .yellow[data-v-e56655cb] {
+    background-color: #dbc90a
+  }
+
+  .mdui-theme-auto .color-preset .grey[data-v-e56655cb] {
+    background-color: #4fd8eb
+  }
+}
+
+.color-custom[data-v-e56655cb] {
+  cursor: pointer;
+  box-sizing: border-box;
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: var(--mdui-shape-corner-extra-small);
+  border: .0625rem solid rgb(var(--mdui-color-outline));
+  margin: .5rem 0
+}

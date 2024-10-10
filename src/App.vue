@@ -13,6 +13,21 @@ import i18n from "@/lang/i18n"
 if (CUSTOM_THEME_COLOR) setColorScheme(CUSTOM_THEME_COLOR)
 let path = document.location.pathname.split('/').pop()
 let title = (path) ? `menu.${path}` : 'menu.home'
+function rgbToHex(rgb: string) {
+  // 匹配 rgb 或 rgba 值
+  let result = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([01]|0?\.\d+))?\)$/);
+
+  if (!result) {
+    return rgb; // 如果不是rgb/rgba，直接返回原值（如已有hex值）
+  }
+
+  // 将 RGB 分量转换为 16 进制，确保两位数
+  let r = parseInt(result[1]).toString(16).padStart(2, '0');
+  let g = parseInt(result[2]).toString(16).padStart(2, '0');
+  let b = parseInt(result[3]).toString(16).padStart(2, '0');
+
+  return `#${r}${g}${b}`.toUpperCase(); // 返回大写的 HEX 颜色
+}
 document.title = `${i18n.global.t(title)} - AIDE Plus`
 export default {
   data() {
@@ -34,6 +49,16 @@ export default {
       this.appBarTitle = title
       document.title = `${title} - AIDE Plus`
       if (window.innerWidth < 840) this.isOpen = false
+    },
+    async setColor(event: any) {
+      let background = rgbToHex(window.getComputedStyle(event.target, null)
+          .getPropertyValue('background-color'))
+      localStorage.setItem('themeColor', background)
+      setColorScheme(background)
+    },
+    async handleColorChange(event: any) {
+      localStorage.setItem('themeColor', event.target?.value)
+      setColorScheme(event.target?.value)
     }
   }
 }
@@ -53,11 +78,20 @@ export default {
         </mdui-dropdown>
 
         <mdui-dropdown trigger="hover">
-          <mdui-button-icon icon="more_vert" slot="trigger"></mdui-button-icon>
-          <mdui-menu>
-            <mdui-menu-item>Item 1</mdui-menu-item>
-            <mdui-menu-item>Item 2</mdui-menu-item>
-          </mdui-menu>
+          <mdui-button-icon icon="color_lens" slot="trigger"></mdui-button-icon>
+          <mdui-card data-v-e56655cb="" class="card" variant="elevated">
+            <div data-v-e56655cb="" class="color-label">{{ $t('menu.color.preset') }}</div>
+            <div data-v-e56655cb="" class="color-preset">
+              <div data-v-e56655cb="" class="red" @click="setColor($event)"></div>
+              <div data-v-e56655cb="" class="purple" @click="setColor($event)"></div>
+              <div data-v-e56655cb="" class="blue" @click="setColor($event)"></div>
+              <div data-v-e56655cb="" class="green" @click="setColor($event)"></div>
+              <div data-v-e56655cb="" class="yellow" @click="setColor($event)"></div>
+              <div data-v-e56655cb="" class="grey" @click="setColor($event)"></div>
+            </div>
+            <div data-v-e56655cb="" class="color-label">{{ $t('menu.color.custom') }}</div>
+            <input data-v-e56655cb="" type="color" class="color-custom" @input="handleColorChange">
+          </mdui-card>
         </mdui-dropdown>
       </mdui-top-app-bar>
       <mdui-navigation-drawer class="navigation-drawer" contained :open="isOpen" @overlay-click="isOpen=false">
