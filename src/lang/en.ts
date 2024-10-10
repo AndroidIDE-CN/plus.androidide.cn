@@ -6,6 +6,11 @@ export default {
     color: {
       preset: "Preset Colors",
       custom: "Custom Color"
+    },
+    theme: {
+      light: 'Light',
+      dark: 'Dark',
+      auto: 'System'
     }
   }
 }

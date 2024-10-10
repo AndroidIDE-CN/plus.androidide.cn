@@ -7,12 +7,14 @@ import {changeLanguage} from "@/lang/i18n"
 
 <script lang="ts">
 import {CUSTOM_THEME_COLOR} from "@/config"
-import {setColorScheme} from "mdui"
+import {getTheme, setColorScheme, setTheme} from "mdui"
 import i18n from "@/lang/i18n"
+import type {Theme} from "mdui/internal/theme";
 
 if (CUSTOM_THEME_COLOR) setColorScheme(CUSTOM_THEME_COLOR)
 let path = document.location.pathname.split('/').pop()
 let title = (path) ? `menu.${path}` : 'menu.home'
+
 function rgbToHex(rgb: string) {
   // 匹配 rgb 或 rgba 值
   let result = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([01]|0?\.\d+))?\)$/);
@@ -28,7 +30,9 @@ function rgbToHex(rgb: string) {
 
   return `#${r}${g}${b}`.toUpperCase(); // 返回大写的 HEX 颜色
 }
+
 document.title = `${i18n.global.t(title)} - AIDE Plus`
+setTheme((localStorage.getItem('theme') as Theme) ?? 'auto')
 export default {
   data() {
     return {
@@ -37,18 +41,18 @@ export default {
     }
   },
   methods: {
-    menuButton() {
+    async menuButton() {
       this.isOpen = !this.isOpen
     },
     async menuClick(path: string, title: string) {
       this.$router.push(path).then(() => {
+        title = this.$t(title)
+        this.appBarTitle = title
+        document.title = `${title} - AIDE Plus`
+        if (window.innerWidth < 840) this.isOpen = false
       }).catch((e) => {
         console.log(e)
       })
-      title = this.$t(title)
-      this.appBarTitle = title
-      document.title = `${title} - AIDE Plus`
-      if (window.innerWidth < 840) this.isOpen = false
     },
     async setColor(event: any) {
       let background = rgbToHex(window.getComputedStyle(event.target, null)
@@ -59,6 +63,10 @@ export default {
     async handleColorChange(event: any) {
       localStorage.setItem('themeColor', event.target?.value)
       setColorScheme(event.target?.value)
+    },
+    async changeTheme(theme: string) {
+      setTheme(theme as Theme)
+      localStorage.setItem('theme', theme)
     }
   }
 }
@@ -74,6 +82,16 @@ export default {
           <mdui-menu class="menu-transition" selects="single" :value="i18n.global.locale.value">
             <mdui-menu-item value="zh" @click="changeLanguage('zh')">简体中文</mdui-menu-item>
             <mdui-menu-item value="en" @click="changeLanguage('en')">English</mdui-menu-item>
+          </mdui-menu>
+        </mdui-dropdown>
+
+        <mdui-dropdown trigger="hover">
+          <mdui-button-icon icon="light_mode" slot="trigger"></mdui-button-icon>
+          <mdui-menu class="menu-theme" selects="single" :value="getTheme()">
+            <mdui-menu-item class="light" value="light" @click="changeTheme('light')">{{ $t('menu.theme.light') }}</mdui-menu-item>
+            <mdui-menu-item class="dark" value="dark" @click="changeTheme('dark')">{{ $t('menu.theme.dark') }}</mdui-menu-item>
+            <mdui-divider></mdui-divider>
+            <mdui-menu-item class="auto" value="auto" @click="changeTheme('auto')">{{ $t('menu.theme.auto') }}</mdui-menu-item>
           </mdui-menu>
         </mdui-dropdown>
 
