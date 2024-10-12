@@ -88,9 +88,9 @@ export default {
       <mdui-button-icon class="menu-button" icon="menu" @click="menuButton"></mdui-button-icon>
       <mdui-top-app-bar-title>{{ appBarTitle }}</mdui-top-app-bar-title>
 
-      <mdui-dropdown v-if="!displayIconButton" trigger="click" @close="onCheckTheme()">
+      <mdui-dropdown v-if="!displayIconButton" trigger="hover" @close="onCheckTheme()">
         <mdui-button-icon icon="more_vert" slot="trigger"></mdui-button-icon>
-        <mdui-menu class="more_vert" submenu-trigger="click">
+        <mdui-menu class="more_vert">
           <mdui-menu-item>
            {{ $t('menu.submenu.language') }}
             <mdui-menu-item slot="submenu" value="zh" @click="changeLanguage('zh')">简体中文</mdui-menu-item>
