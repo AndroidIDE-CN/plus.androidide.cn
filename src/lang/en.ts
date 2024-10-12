@@ -11,6 +11,11 @@ export default {
       light: 'Light',
       dark: 'Dark',
       auto: 'System'
+    },
+    submenu: {
+      language: "Language Setting",
+      theme: "Mode Setting",
+      color: "Color Setting"
     }
   }
 }
