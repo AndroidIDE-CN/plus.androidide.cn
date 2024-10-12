@@ -73,6 +73,9 @@ export default {
     async onCheckTheme() {
       this.displayIcon = (getTheme() === 'dark') ? 'dark_mode' : 'light_mode';
       (document.querySelector('.menu-theme') as Menu).value = [getTheme()]
+    },
+    async subCheckTheme() {
+      this.displayIcon = (getTheme() === 'dark') ? 'dark_mode' : 'light_mode'
     }
   },
   mounted() {
@@ -88,7 +91,7 @@ export default {
       <mdui-button-icon class="menu-button" icon="menu" @click="menuButton"></mdui-button-icon>
       <mdui-top-app-bar-title>{{ appBarTitle }}</mdui-top-app-bar-title>
 
-      <mdui-dropdown v-if="!displayIconButton" trigger="hover" @close="onCheckTheme()" stay-open-on-click>
+      <mdui-dropdown v-if="!displayIconButton" trigger="hover" @close="subCheckTheme" stay-open-on-click>
         <mdui-button-icon icon="more_vert" slot="trigger"></mdui-button-icon>
         <mdui-menu class="more_vert" submenu-trigger="hover click">
           <mdui-menu-item>
@@ -137,7 +140,7 @@ export default {
         </mdui-menu>
       </mdui-dropdown>
 
-      <mdui-dropdown v-if="displayIconButton" trigger="hover" @close="onCheckTheme()">
+      <mdui-dropdown v-if="displayIconButton" trigger="hover" @close="onCheckTheme">
         <mdui-button-icon slot="trigger" variant="standard" :icon="displayIcon"></mdui-button-icon>
         <mdui-menu class="menu-theme" selects="multiple" :value="getTheme()">
           <mdui-menu-item class="light" value="light" @click="changeTheme('light')">
