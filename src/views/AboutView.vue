@@ -1,16 +1,26 @@
-<script setup lang="ts">
+<script lang="ts">
 import {marked} from "marked"
+import axios from "axios";
 
-let md = "# About Us\n- Github: [hujiayucc](https://github.com/hujiayucc)\n"
-md += "- Email: [hujiayucc@gmail.com](mailto:hujiayucc@gmail.com)"
+export default {
+  data() {
+    return {
+      html: marked.parse('** Load Failed! **')
+    }
+  },
+  mounted() {
+    axios.get('/hujiayucc.md').then(
+        res => {
+          this.html = marked.parse(res.data)
+        }
+    ).catch(e => {
+      console.log(e)
+    })
+  }
+}
 
-let html = marked.parse(md)
 </script>
 
 <template>
   <div class="markdown-content" v-html="html"></div>
 </template>
-
-<style>
-
-</style>

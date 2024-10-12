@@ -189,11 +189,11 @@ export default {
 
     <mdui-layout-main class="layout-main hide-scrollbar">
       <RouterView/>
+      <mdui-bottom-app-bar scroll-target=".layout-main" scroll-behavior="hide" scroll-threshold="30">
+        <span class="footer-content-text">
+          Copyright © 2024 <a class="footer-content-text" href="https://github.com/hujiayucc" target="_blank">hujiayucc</a> All Rights Reserved.
+        </span>
+      </mdui-bottom-app-bar>
     </mdui-layout-main>
   </mdui-layout>
-  <mdui-bottom-app-bar scroll-target=".layout-main" scroll-behavior="hide" scroll-threshold="30">
-    <span class="footer-content-text">
-      Copyright © 2024 <a class="footer-content-text" href="https://github.com/hujiayucc" target="_blank">hujiayucc</a> All Rights Reserved.
-    </span>
-  </mdui-bottom-app-bar>
 </template>
