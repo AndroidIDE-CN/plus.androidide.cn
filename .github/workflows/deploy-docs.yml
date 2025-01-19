@@ -26,7 +26,7 @@ jobs:
 
       # 执行构建 (tsc && vite build)
       - name: Build project
-        run: npm run build-only
+        run: npm run build
 
       # 上传到 FTP 根目录
       - name: Deploy to FTP
