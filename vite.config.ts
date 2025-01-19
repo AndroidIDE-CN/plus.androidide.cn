@@ -1,9 +1,18 @@
-import { fileURLToPath, URL } from 'node:url'
-
-import { defineConfig } from 'vite'
+import {fileURLToPath, URL} from 'node:url'
+import {defineConfig, IndexHtmlTransformResult, PluginOption} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import htmlMinifier from 'vite-plugin-html-minifier-terser'
+
+const removeScriptPlugin: PluginOption = {
+  name: 'removeScriptPlugin',
+  transformIndexHtml(html: string): IndexHtmlTransformResult {
+    return html.replace(
+        /<script defer src="https:\/\/static.cloudflareinsights.com\/beacon.min.js\/"[^>]*><\/script>/g,
+        ''
+    );
+  }
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -28,6 +37,7 @@ export default defineConfig({
         minifyJS: true,                    // 压缩内联 JS
       },
     }),
+    removeScriptPlugin
   ],
   build: {
     minify: 'terser', // 使用 terser 进行压缩
