@@ -1,0 +1,26 @@
+[
+  {
+	"type": "file",
+	"name": "index",
+	"label": "Help"
+  },
+  {
+	"type": "file",
+	"name": "ndk-install",
+	"label": "NDK Installation"
+  },
+  {
+	"type": "file",
+	"name": "smart-questions",
+	"label": "The Art of Asking Questions"
+  },
+  {
+	"type": "divider",
+	"dashed": "true"
+  },
+  {
+	"type": "dir",
+	"name": "introduction",
+	"label": "Software Introduction"
+  }
+]

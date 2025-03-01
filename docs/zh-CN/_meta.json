@@ -1,0 +1,15 @@
+[
+  {
+    "text": "下载",
+    "link": "/download"
+  },
+  {
+    "text": "帮助",
+    "link": "/help/",
+    "activeMatch": "/help/"
+  },
+  {
+	"text": "关于",
+	"link": "/about/"
+  }
+]

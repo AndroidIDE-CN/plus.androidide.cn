@@ -1,0 +1,15 @@
+[
+  {
+	"text": "Download",
+	"link": "/download"
+  },
+  {
+	"text": "Support",
+	"link": "/help/",
+	"activeMatch": "/help/"
+  },
+  {
+	"text": "About",
+	"link": "/about/"
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+	"type": "file",
+	"name": "index",
+	"label": "帮助"
+  },
+  {
+	"type": "file",
+	"name": "ndk-install",
+	"label": "ndk的安装"
+  },
+  {
+	"type": "file",
+	"name": "smart-questions",
+	"label": "提问的艺术"
+  },
+  {
+	"type": "divider",
+	"dashed": "true"
+  },
+  {
+	"type": "dir",
+	"name": "introduction",
+	"label": "软件介绍"
+  }
+]
