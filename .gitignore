@@ -1,0 +1,11 @@
+node_modules
+.vscode
+.history
+.DS_Store
+.idea
+.env
+.env.local
+.env.development.local
+.env.test.local
+docs/.vitepress/cache
+docs/.vitepress/dist
