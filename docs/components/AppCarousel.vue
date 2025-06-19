@@ -17,22 +17,22 @@ const slides: Slide[] = [
     link: ''
   },
   {
-    img: '/assets/more_setting.png',
+    img: '/assets/more_settings.png',
     alt: 'More-Setting',
     description: '更多的设置',
-    link: '/intro/more-setting'
+    link: ''
   },
   {
     img: '/assets/gradle_file.png',
     alt: 'Gradle-Parser',
     description: '新的Gradle解析器',
-    link: '/intro/gradle-parser'
+    link: '/docs/help/gradle-parser'
   },
   {
     img: '/assets/code.png',
     alt: 'Java-Code',
     description: '新版本Java的支持',
-    link: '/intro/java-support'
+    link: ''
   }
 ]
 
