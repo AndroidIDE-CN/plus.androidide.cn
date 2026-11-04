@@ -1,15 +1,18 @@
 <script setup lang="ts">
-import {onMounted, ref} from "vue"
+import {computed, onMounted, ref} from "vue"
 import {fetchReleases, fetchRepoStats, totalDownloads} from "@/api/github"
 import type {Release, RepoStats} from "@/api/github"
 import {COMMUNITY, LOGO_URL} from "@/config"
 import {HIGHLIGHTS, STEPS} from "@/data/features"
 import {formatCount} from "@/utils/format"
+import {MONO, themeColor} from "@/plugins/vuetify"
 
 const latest = ref<Release | null>(null)
 const stats = ref<RepoStats | null>(null)
 const downloads = ref<number | null>(null)
 const releaseCount = ref<number | null>(null)
+/** 黑白配色时横幅用白底、深色按钮；选了主题色时横幅用主题色、白色按钮 */
+const mono = computed(() => themeColor.value === MONO)
 
 /**
  * 加载首页统计：最新版本号、Star/Fork 与累计下载。失败时这些数字不显示，不影响页面。
@@ -28,17 +31,17 @@ onMounted(loadStats)
 </script>
 
 <template>
-  <v-sheet class="hero" color="primary" rounded elevation="2">
+  <v-sheet :class="['hero', {mono}]" :color="mono ? 'surface' : 'primary'" rounded elevation="1">
     <img class="hero-logo" :src="LOGO_URL" alt="AIDE Plus" width="88" height="88">
     <div class="hero-text">
       <div class="text-overline hero-badge">{{ $t('home.badge') }}</div>
       <h1 class="hero-title">{{ $t('home.title') }}</h1>
       <p class="hero-subtitle">{{ $t('home.subtitle') }}</p>
       <div class="hero-actions">
-        <v-btn color="white" class="text-primary" size="large" prepend-icon="file_download" to="/download">
+        <v-btn :color="mono ? 'primary' : 'white'" :class="{'text-primary': !mono}" size="large" prepend-icon="file_download" to="/download">
           {{ $t('home.download') }}
         </v-btn>
-        <v-btn variant="outlined" color="white" size="large" prepend-icon="menu_book" to="/docs">
+        <v-btn variant="outlined" :color="mono ? undefined : 'white'" size="large" prepend-icon="menu_book" to="/docs">
           {{ $t('home.docs') }}
         </v-btn>
       </div>

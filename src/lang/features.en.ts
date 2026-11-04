@@ -32,7 +32,7 @@ export default {
       {
         t: 'Third-party plugins (.aplug, Java or Lua) with one-tap translation of their descriptions',
         where: 'Home → Plugins → Import plugin',
-        how: 'Plugins run with all AIDE Plus permissions, so only install trusted ones; uninstall from the detail page'
+        how: 'Plugins run with all AIDE Plus permissions, so only install trusted ones; uninstall from the detail page. To write one, see Docs → Plugin development'
       },
       {
         t: 'Share page: featured and GitHub-discovered projects, imported in one tap',

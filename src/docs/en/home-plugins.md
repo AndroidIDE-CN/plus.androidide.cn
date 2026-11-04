@@ -25,7 +25,7 @@ The round button at the bottom right has three actions:
 Common tools such as the icon library sit at the top, followed by **Installed** and **Built-in**:
 
 - Each plugin and each built-in category has its own entry. Tap it to toggle individual components (editor previews, file previews, Markdown extensions, decompilers), adjust related settings and see its ID, source and description.
-- **Import plugin**: install a `.aplug` package. Java and Lua plugins are supported; Lua plugins can add file previews, editor previews and Markdown styles without compiling. Descriptions can be translated in one tap.
+- **Import plugin**: install a `.aplug` package. Java and Lua plugins are supported; Lua plugins can add file previews, editor previews and Markdown styles without compiling. Descriptions can be translated in one tap. To write your own, see [Plugin development](/docs/plugin-dev).
 - Plugins run with all AIDE Plus permissions and can read and change your projects, so only install trusted ones. Uninstall from the plugin’s detail page.
 
 ## Share

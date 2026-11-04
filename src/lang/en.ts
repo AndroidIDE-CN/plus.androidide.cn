@@ -9,7 +9,8 @@ export default {
     about: 'About Us',
     color: {
       preset: "Preset Colors",
-      custom: "Custom Color"
+      custom: "Custom Color",
+      mono: "Black & white (default)"
     },
     theme: {
       light: 'Light',
@@ -77,7 +78,7 @@ export default {
     noMatch: 'No matching features',
     where: 'Where',
     how: 'How',
-    entryOnly: 'Only features with entry points',
+    count: '{n} features',
     cat: features
   },
   docs: {
@@ -90,6 +91,7 @@ export default {
     items: {
       'getting-started': 'Getting started',
       'home-plugins': 'Home, plugins and sharing',
+      'plugin-dev': 'Plugin development',
       'project-build': 'Projects and builds',
       'java-compiler': 'Java and Kotlin',
       'ndk-cmake': 'NDK and CMake',
