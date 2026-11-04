@@ -8,6 +8,7 @@ export interface DocEntry {
 export const DOCS: DocEntry[] = [
     {id: 'getting-started', icon: 'rocket_launch'},
     {id: 'home-plugins', icon: 'home'},
+    {id: 'plugin-dev', icon: 'extension'},
     {id: 'project-build', icon: 'build'},
     {id: 'java-compiler', icon: 'code'},
     {id: 'ndk-cmake', icon: 'memory'},

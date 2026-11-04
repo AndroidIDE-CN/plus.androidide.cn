@@ -4,7 +4,7 @@ import {RouterView, useRoute, useRouter} from "vue-router"
 import {useI18n} from "vue-i18n"
 import {useDisplay} from "vuetify"
 import {changeLanguage} from "@/lang/i18n"
-import {applyThemeMode, savedThemeMode} from "@/plugins/vuetify"
+import {applyThemeMode, MONO, savedThemeMode, themeColor} from "@/plugins/vuetify"
 import type {ThemeMode} from "@/plugins/vuetify"
 import ColorPicker from "@/components/ColorPicker.vue"
 import {LOGO_URL, REPO_URL} from "@/config"
@@ -36,6 +36,8 @@ const themeMode = ref<ThemeMode>(savedThemeMode())
 const year = new Date().getFullYear()
 
 const title = computed(() => t((route.meta.titleKey as string) || 'menu.home'))
+/** 黑白配色时顶栏用白底（深色模式下为深灰），否则用主题色 */
+const barColor = computed(() => themeColor.value === MONO ? 'surface' : 'primary')
 const themeIcon = computed(() => THEME_MODES.find(m => m.mode === themeMode.value)?.icon ?? 'brightness_auto')
 
 /**
@@ -71,7 +73,7 @@ watch(mdAndUp, v => drawer.value = v)
 
 <template>
   <v-app>
-    <v-app-bar color="primary" elevation="4" density="comfortable">
+    <v-app-bar :color="barColor" elevation="2" density="comfortable">
       <template #prepend>
         <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       </template>

@@ -9,7 +9,8 @@ export default {
     about: "关于我们",
     color: {
       preset: "预设颜色",
-      custom: "自选颜色"
+      custom: "自选颜色",
+      mono: "黑白（默认）"
     },
     theme: {
       light: "亮色模式",
@@ -77,7 +78,7 @@ export default {
     noMatch: "没有匹配的功能",
     where: "打开位置",
     how: "使用方式",
-    entryOnly: "只看有入口说明的功能",
+    count: "共 {n} 项功能",
     cat: features
   },
   docs: {
@@ -90,6 +91,7 @@ export default {
     items: {
       "getting-started": "快速开始",
       "home-plugins": "首页、插件与共享",
+      "plugin-dev": "插件开发",
       "project-build": "项目与构建",
       "java-compiler": "Java 与 Kotlin",
       "ndk-cmake": "NDK 与 CMake",

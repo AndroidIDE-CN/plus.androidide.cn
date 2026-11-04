@@ -31,7 +31,7 @@ interface Config {
     /** 发布 APK 的仓库 */
     REPO_OWNER: string
     REPO_NAME: string
-    /** 主题色（HEX），默认 MD2 Red 700 */
+    /** 主题色：HEX 颜色，或 'mono' 表示默认的黑白配色 */
     CUSTOM_THEME_COLOR: string
     COMMUNITY: CommunityLink[]
     MEMBERS: Member[]
@@ -43,7 +43,7 @@ interface Config {
 const config: Config = {
     REPO_OWNER: 'AndroidIDE-CN',
     REPO_NAME: 'AIDE-Plus',
-    CUSTOM_THEME_COLOR: localStorage.getItem('themeColor') || '#D32F2F',
+    CUSTOM_THEME_COLOR: localStorage.getItem('themeColor') || 'mono',
     COMMUNITY: [
         {icon: 'group', nameKey: 'qqGroup', url: 'https://qm.qq.com/q/W0WJq5qne2', extra: '487145957'},
         {icon: 'group', nameKey: 'qqGroup', url: 'https://qm.qq.com/q/W0WJq5qne2', extra: '1002980489'},
