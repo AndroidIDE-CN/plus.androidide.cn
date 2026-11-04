@@ -15,8 +15,15 @@ const removeScriptPlugin: PluginOption = {
   }
 }
 
+/**
+ * 部署子路径。GitHub Pages 项目页为 /<仓库名>/，绑定自定义域名时为 /。
+ * 由 Actions 通过 BASE_PATH 传入（actions/configure-pages 的 base_path）。
+ */
+const base = `${(process.env.BASE_PATH || '').replace(/\/+$/, '')}/`
+
 // https://vitejs.dev/config/
 export default defineConfig({
+  base,
   plugins: [
     vue(),
     // 按需引入 Vuetify 组件与样式

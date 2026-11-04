@@ -29,7 +29,7 @@ npm run build      # 拉取发布快照 + 类型检查 + 构建 + 生成子页�
 npm run preview    # 预览构建结果
 ```
 
-构建后 `scripts/spa-fallback.mjs` 会为每个路由复制一份 `index.html` 并生成 `404.html`，FTP、GitHub Pages 等纯静态主机也能直接打开子页面。
+构建后 `scripts/spa-fallback.mjs` 会为每个路由复制一份 `index.html` 并生成 `404.html`，GitHub Pages 这类纯静态主机也能直接打开子页面。
 
 ## 修改内容
 
@@ -42,7 +42,7 @@ npm run preview    # 预览构建结果
 
 `.github/workflows/deploy-docs.yml`：
 
-- 推送到 `main`、每 6 小时定时、手动运行或收到 `repository_dispatch`（type `release`）时构建，并通过 FTP 部署（需要 `FTP_SERVER`、`FTP_USERNAME`、`FTP_PASSWORD`、`FTP_PORT` 四个 Secrets）。
+- 推送到 `main`、每 6 小时定时、手动运行或收到 `repository_dispatch`（type `release`）时构建，并部署到 GitHub Pages。需要在仓库 Settings → Pages 把 Source 设为 “GitHub Actions”。子路径由 `actions/configure-pages` 自动给出：项目页是 `/plus.androidide.cn/`，绑定自定义域名后是 `/`。
 - Pull Request 只做构建检查并上传 `dist` 产物，不部署。
 
 想在 AIDE-Plus 发版后立即刷新下载页，可在发版流程中调用：

@@ -2,7 +2,7 @@
 import {onMounted, ref} from "vue"
 import {fetchReleases, fetchRepoStats, totalDownloads} from "@/api/github"
 import type {Release, RepoStats} from "@/api/github"
-import {COMMUNITY} from "@/config"
+import {COMMUNITY, LOGO_URL} from "@/config"
 import {HIGHLIGHTS, STEPS} from "@/data/features"
 import {formatCount} from "@/utils/format"
 
@@ -29,7 +29,7 @@ onMounted(loadStats)
 
 <template>
   <v-sheet class="hero" color="primary" rounded elevation="2">
-    <img class="hero-logo" src="/favicon.png" alt="AIDE Plus" width="88" height="88">
+    <img class="hero-logo" :src="LOGO_URL" alt="AIDE Plus" width="88" height="88">
     <div class="hero-text">
       <div class="text-overline hero-badge">{{ $t('home.badge') }}</div>
       <h1 class="hero-title">{{ $t('home.title') }}</h1>

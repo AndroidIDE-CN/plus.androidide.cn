@@ -14,6 +14,12 @@ on:
   repository_dispatch:
     types: [release]
 
+# 部署到 GitHub Pages 需要的权限
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 concurrency:
   group: deploy-${{ github.ref }}
   cancel-in-progress: true
@@ -38,11 +44,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # 读取 Pages 配置，得到部署子路径（项目页为 /仓库名，自定义域名为空）
+      - name: Setup Pages
+        id: pages
+        if: github.event_name != 'pull_request'
+        uses: actions/configure-pages@v5
+
       # 拉取发布快照 -> 类型检查 + vite build -> 生成子页面入口
       - name: Build project
         run: npm run build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
 
       # PR 只检查能否构建，上传产物方便预览
       - name: Upload artifact
@@ -53,13 +66,22 @@ jobs:
           path: dist
           retention-days: 7
 
-      # 上传到 FTP 根目录（PR 不部署）
-      - name: Deploy to FTP
+      # 上传 Pages 产物（PR 不部署）
+      - name: Upload Pages artifact
         if: github.event_name != 'pull_request'
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        uses: actions/upload-pages-artifact@v3
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT }}
-          local-dir: ./dist/
+          path: dist
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # 发布到 GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

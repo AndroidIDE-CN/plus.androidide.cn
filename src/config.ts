@@ -79,3 +79,6 @@ export const {
 
 /** 仓库主页地址 */
 export const REPO_URL = `https://github.com/${REPO_OWNER}/${REPO_NAME}`
+
+/** 站点 Logo 地址，带上部署子路径 */
+export const LOGO_URL = `${import.meta.env.BASE_URL}favicon.png`
