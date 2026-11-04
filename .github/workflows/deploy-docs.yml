@@ -4,6 +4,19 @@ on:
   push:
     branches:
       - main
+  pull_request:
+  # 每 6 小时自动重新构建一次，刷新下载页的发布快照
+  schedule:
+    - cron: '0 */6 * * *'
+  # 可以在 Actions 页面手动运行
+  workflow_dispatch:
+  # AIDE-Plus 发布新版本后可通过 repository_dispatch(type: release) 立即触发
+  repository_dispatch:
+    types: [release]
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -12,24 +25,37 @@ jobs:
     steps:
       # 检出代码
       - name: Checkout code
-        uses: actions/checkout@v4.2.0
+        uses: actions/checkout@v4
 
       # 设置 Node.js 20 环境
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: npm
 
       # 安装依赖项
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      # 执行构建 (tsc && vite build)
+      # 拉取发布快照 -> 类型检查 + vite build -> 生成子页面入口
       - name: Build project
         run: npm run build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # 上传到 FTP 根目录
+      # PR 只检查能否构建，上传产物方便预览
+      - name: Upload artifact
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+          retention-days: 7
+
+      # 上传到 FTP 根目录（PR 不部署）
       - name: Deploy to FTP
+        if: github.event_name != 'pull_request'
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
