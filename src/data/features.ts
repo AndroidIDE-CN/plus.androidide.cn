@@ -6,17 +6,19 @@ export interface FeatureCategory {
 
 /** 功能页分类顺序 */
 export const FEATURE_CATEGORIES: FeatureCategory[] = [
+    {id: 'home', icon: 'home'},
     {id: 'build', icon: 'construction'},
     {id: 'java', icon: 'coffee'},
     {id: 'kotlin', icon: 'code'},
     {id: 'deps', icon: 'inventory_2'},
     {id: 'native', icon: 'memory'},
     {id: 'editor', icon: 'edit_note'},
+    {id: 'preview', icon: 'preview'},
     {id: 'debug', icon: 'bug_report'},
     {id: 'protect', icon: 'verified_user'},
     {id: 'terminal', icon: 'terminal'},
     {id: 'ai', icon: 'auto_awesome'},
-    {id: 'ui', icon: 'dashboard'}
+    {id: 'ui', icon: 'settings'}
 ]
 
 /** 首页亮点：id 对应 i18n 中 home.highlights.<id>，to 为点击后跳转的文档 */

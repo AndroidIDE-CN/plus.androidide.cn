@@ -2,8 +2,13 @@
 
 ## Signing configs
 
-1. Create or import a keystore in the **Signing configs** editor.
-2. In the **Build types** editor, pick that entry from the existing `signingConfigs`.
+Create a keystore in **Settings → Build & run → APK signing → New certificate**. The same group can enable a custom certificate for signing debug APKs.
+
+To sign a module:
+
+1. Open project properties (the project properties dialog in the file browser → **Visual editor**) and enter the module.
+2. Add the keystore under **Signing configs**.
+3. Under **Build types**, pick that entry from the existing `signingConfigs`.
 
 ```groovy
 android {
@@ -27,7 +32,7 @@ ApkSign supports the v1, v2 and v3 signature schemes. Keep your keystore safe: w
 
 ## Protection plugins
 
-The module properties page configures these plugins:
+Configure these on the module page of project properties:
 
 | Plugin | Purpose |
 | --- | --- |

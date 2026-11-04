@@ -86,12 +86,18 @@ function downloadUrl(url: string): string {
 
 /**
  * 切换下载线路并记住选择。
- * @param event change 事件
+ * @param value 线路下标
  */
-function onMirror(event: Event) {
-  mirror.value = Number((event.target as HTMLSelectElement).value) || 0
-  localStorage.setItem('downloadMirror', String(mirror.value))
+function onMirror(value: number) {
+  mirror.value = value
+  localStorage.setItem('downloadMirror', String(value))
 }
+
+/** 下载线路选项 */
+const mirrorItems = computed(() => DOWNLOAD_MIRRORS.map((m, i) => ({
+  value: i,
+  title: m.labelKey ? t(`download.mirrors.${m.labelKey}`) : (m.label ?? '')
+})))
 
 /**
  * 复制附件的 SHA-256。
@@ -129,132 +135,148 @@ onMounted(() => load())
     <p>{{ $t('download.subtitle') }}</p>
   </header>
 
-  <div class="toolbar download-toolbar">
+  <div class="download-toolbar">
     <span class="source-text" v-if="result">
-      <mdui-icon :name="result.source === 'snapshot' ? 'cloud_off' : 'cloud_done'"></mdui-icon>
+      <v-icon :icon="result.source === 'snapshot' ? 'cloud_off' : 'cloud_done'" size="18"></v-icon>
       {{ sourceText }}
     </span>
     <span class="spacer"></span>
-    <mdui-select v-if="DOWNLOAD_MIRRORS.length > 1" class="mirror-select" variant="outlined"
-                 :label="$t('download.mirror')" :value="String(mirror)" @change="onMirror">
-      <mdui-menu-item v-for="(m, i) in DOWNLOAD_MIRRORS" :key="i" :value="String(i)">
-        {{ m.labelKey ? $t(`download.mirrors.${m.labelKey}`) : m.label }}
-      </mdui-menu-item>
-    </mdui-select>
-    <mdui-button variant="text" icon="refresh" :loading="loading" @click="load(true)">
+    <v-select v-if="DOWNLOAD_MIRRORS.length > 1" class="mirror-select" :label="$t('download.mirror')"
+              :items="mirrorItems" :model-value="mirror" density="compact" hide-details
+              @update:model-value="onMirror"></v-select>
+    <v-btn variant="text" prepend-icon="refresh" :loading="loading" @click="load(true)">
       {{ $t('download.refresh') }}
-    </mdui-button>
+    </v-btn>
   </div>
 
-  <mdui-linear-progress v-if="loading && !result"></mdui-linear-progress>
+  <v-progress-linear v-if="loading && !result" indeterminate color="primary"></v-progress-linear>
 
-  <mdui-card v-else-if="failed && !result" class="state-card" variant="filled">
-    <mdui-icon name="error_outline"></mdui-icon>
+  <v-card v-else-if="failed && !result" class="state-card" elevation="1">
+    <v-icon icon="error_outline" color="error" size="40"></v-icon>
     <p>{{ $t('common.loadFailed') }}</p>
-    <mdui-button variant="tonal" @click="load(true)">{{ $t('common.retry') }}</mdui-button>
-    <mdui-button variant="text" :href="`${REPO_URL}/releases`" target="_blank">{{ $t('common.viewOnGithub') }}</mdui-button>
-  </mdui-card>
+    <div>
+      <v-btn @click="load(true)">{{ $t('common.retry') }}</v-btn>
+      <v-btn variant="text" :href="`${REPO_URL}/releases`" target="_blank">{{ $t('common.viewOnGithub') }}</v-btn>
+    </div>
+  </v-card>
 
   <p v-else-if="!latest" class="empty-state">{{ $t('download.empty') }}</p>
 
   <template v-else>
-    <mdui-card class="release-card latest" variant="elevated">
-      <div class="release-head">
-        <div>
-          <div class="release-label">{{ $t('download.latest') }}</div>
-          <h2 class="release-name">{{ latest.name }}</h2>
-          <div class="release-meta">
-            <span>{{ $t('download.publishedAt', {date: formatDate(latest.publishedAt, locale)}) }}</span>
-            <mdui-chip v-if="latest.prerelease" class="tag-chip">{{ $t('download.prerelease') }}</mdui-chip>
-          </div>
+    <v-card class="release-card latest" elevation="3">
+      <v-card-item>
+        <v-card-subtitle class="release-label">{{ $t('download.latest') }}</v-card-subtitle>
+        <v-card-title class="release-name">{{ latest.name }}</v-card-title>
+        <div class="release-meta">
+          <span>{{ $t('download.publishedAt', {date: formatDate(latest.publishedAt, locale)}) }}</span>
+          <v-chip v-if="latest.prerelease" size="small" color="warning">{{ $t('download.prerelease') }}</v-chip>
         </div>
-        <mdui-button-icon icon="open_in_new" :href="latest.url" target="_blank" rel="noopener"></mdui-button-icon>
-      </div>
+        <template #append>
+          <v-btn icon="open_in_new" variant="text" :href="latest.url" target="_blank" rel="noopener"
+                 :title="$t('common.viewOnGithub')"></v-btn>
+        </template>
+      </v-card-item>
 
-      <p v-if="!latest.assets.length" class="empty-state">{{ $t('download.noAssets') }}</p>
-      <div class="asset-list">
-        <div v-for="asset in sortAssets(latest.assets)" :key="asset.name"
-             :class="['asset', {recommended: isRecommended(asset, latest)}]">
-          <div class="asset-info">
-            <div class="asset-title">
-              <mdui-icon name="android"></mdui-icon>
-              <span class="asset-name">{{ asset.name }}</span>
-              <mdui-chip v-if="isRecommended(asset, latest)" class="tag-chip" icon="star">
-                {{ $t('download.recommended') }}
-              </mdui-chip>
+      <v-card-text>
+        <p v-if="!latest.assets.length" class="empty-state">{{ $t('download.noAssets') }}</p>
+        <div class="asset-list">
+          <v-sheet v-for="asset in sortAssets(latest.assets)" :key="asset.name" rounded border
+                   :class="['asset', {recommended: isRecommended(asset, latest)}]">
+            <div class="asset-info">
+              <div class="asset-title">
+                <v-icon icon="android" color="success"></v-icon>
+                <span class="asset-name">{{ asset.name }}</span>
+                <v-chip v-if="isRecommended(asset, latest)" size="small" color="primary" prepend-icon="star"
+                        variant="flat">
+                  {{ $t('download.recommended') }}
+                </v-chip>
+              </div>
+              <div class="asset-meta">
+                <span v-if="assetPackage(asset.name)">{{ $t('download.packageName', {name: assetPackage(asset.name)}) }}</span>
+                <span>{{ formatSize(asset.size) }}</span>
+                <span>{{ $t('download.downloads', {count: asset.downloadCount}) }}</span>
+              </div>
+              <div class="asset-digest" v-if="asset.digest">
+                <span class="digest-label">{{ $t('download.sha256') }}</span>
+                <code>{{ asset.digest.replace(/^sha256:/, '') }}</code>
+                <v-btn :icon="copied === asset.name ? 'check' : 'content_copy'" variant="text" size="small"
+                       :title="copied === asset.name ? $t('download.copied') : $t('download.copy')"
+                       @click="copyDigest(asset)"></v-btn>
+              </div>
             </div>
-            <div class="asset-meta">
-              <span v-if="assetPackage(asset.name)">{{ $t('download.packageName', {name: assetPackage(asset.name)}) }}</span>
-              <span>{{ formatSize(asset.size) }}</span>
-              <span>{{ $t('download.downloads', {count: asset.downloadCount}) }}</span>
-            </div>
-            <div class="asset-digest" v-if="asset.digest">
-              <span class="digest-label">{{ $t('download.sha256') }}</span>
-              <code>{{ asset.digest.replace(/^sha256:/, '') }}</code>
-              <mdui-button-icon :icon="copied === asset.name ? 'check' : 'content_copy'"
-                                :title="copied === asset.name ? $t('download.copied') : $t('download.copy')"
-                                @click="copyDigest(asset)"></mdui-button-icon>
-            </div>
-          </div>
-          <mdui-button class="asset-download" :variant="isRecommended(asset, latest) ? 'filled' : 'tonal'"
-                       icon="download" :href="downloadUrl(asset.url)" rel="noopener">
-            {{ formatSize(asset.size) }}
-          </mdui-button>
+            <v-btn class="asset-download" :variant="isRecommended(asset, latest) ? 'elevated' : 'outlined'"
+                   prepend-icon="file_download" :href="downloadUrl(asset.url)" rel="noopener">
+              {{ formatSize(asset.size) }}
+            </v-btn>
+          </v-sheet>
         </div>
-      </div>
+      </v-card-text>
 
       <template v-if="latest.body">
-        <mdui-divider></mdui-divider>
-        <h3 class="changelog-title">{{ $t('download.changelog') }}</h3>
-        <div class="markdown-body changelog" v-html="latestHtml"></div>
+        <v-divider></v-divider>
+        <v-card-text>
+          <h3 class="changelog-title">{{ $t('download.changelog') }}</h3>
+          <div class="markdown-body changelog" v-html="latestHtml"></div>
+        </v-card-text>
       </template>
-    </mdui-card>
+    </v-card>
 
-    <div class="info-grid">
-      <mdui-card variant="filled" class="info-card">
-        <h3><mdui-icon name="help_outline"></mdui-icon>{{ $t('download.packagesTitle') }}</h3>
-        <p>{{ $t('download.packagesDesc') }}</p>
-      </mdui-card>
-      <mdui-card variant="filled" class="info-card">
-        <h3><mdui-icon name="tips_and_updates"></mdui-icon>{{ $t('download.tipsTitle') }}</h3>
-        <ul>
-          <li v-for="(tip, i) in tips" :key="i">{{ tip }}</li>
-        </ul>
-      </mdui-card>
-    </div>
+    <v-row class="info-grid">
+      <v-col cols="12" md="6">
+        <v-card class="info-card" elevation="1">
+          <v-card-item prepend-icon="help_outline" :title="$t('download.packagesTitle')"></v-card-item>
+          <v-card-text>{{ $t('download.packagesDesc') }}</v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-card class="info-card" elevation="1">
+          <v-card-item prepend-icon="tips_and_updates" :title="$t('download.tipsTitle')"></v-card-item>
+          <v-card-text>
+            <ul>
+              <li v-for="(tip, i) in tips" :key="i">{{ tip }}</li>
+            </ul>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
 
     <section class="section" v-if="history.length">
       <h2 class="section-title">{{ $t('download.history') }}</h2>
-      <mdui-card v-for="r in history" :key="r.tag" class="release-card" variant="outlined">
-        <div class="release-head">
-          <div>
-            <h3 class="release-name small">{{ r.name }}</h3>
-            <div class="release-meta">
-              <span>{{ formatDate(r.publishedAt, locale) }}</span>
-              <mdui-chip v-if="r.prerelease" class="tag-chip">{{ $t('download.prerelease') }}</mdui-chip>
-            </div>
+      <v-card v-for="r in history" :key="r.tag" class="release-card" elevation="1">
+        <v-card-item>
+          <v-card-title class="release-name small">{{ r.name }}</v-card-title>
+          <div class="release-meta">
+            <span>{{ formatDate(r.publishedAt, locale) }}</span>
+            <v-chip v-if="r.prerelease" size="small" color="warning">{{ $t('download.prerelease') }}</v-chip>
           </div>
-          <mdui-button-icon icon="open_in_new" :href="r.url" target="_blank" rel="noopener"></mdui-button-icon>
-        </div>
-        <div class="asset-chips">
-          <mdui-button v-for="asset in sortAssets(r.assets)" :key="asset.name" variant="tonal" icon="download"
-                       :href="downloadUrl(asset.url)" rel="noopener">
+          <template #append>
+            <v-btn icon="open_in_new" variant="text" :href="r.url" target="_blank" rel="noopener"></v-btn>
+          </template>
+        </v-card-item>
+        <v-card-text class="asset-chips">
+          <v-btn v-for="asset in sortAssets(r.assets)" :key="asset.name" variant="outlined" size="small"
+                 prepend-icon="file_download" :href="downloadUrl(asset.url)" rel="noopener">
             {{ assetPackage(asset.name) || asset.name }} · {{ formatSize(asset.size) }}
-          </mdui-button>
+          </v-btn>
           <span v-if="!r.assets.length" class="muted">{{ $t('download.noAssets') }}</span>
-        </div>
+        </v-card-text>
         <template v-if="r.body">
-          <mdui-button variant="text" :end-icon="expanded.has(r.tag) ? 'expand_less' : 'expand_more'"
-                       @click="toggle(r.tag)">
-            {{ expanded.has(r.tag) ? $t('download.showLess') : $t('download.showMore') }}
-          </mdui-button>
-          <div v-if="expanded.has(r.tag)" class="markdown-body changelog" v-html="historyHtml.get(r.tag)"></div>
+          <v-card-actions>
+            <v-btn variant="text" :append-icon="expanded.has(r.tag) ? 'expand_less' : 'expand_more'"
+                   @click="toggle(r.tag)">
+              {{ expanded.has(r.tag) ? $t('download.showLess') : $t('download.showMore') }}
+            </v-btn>
+          </v-card-actions>
+          <v-expand-transition>
+            <v-card-text v-if="expanded.has(r.tag)" class="markdown-body changelog" v-html="historyHtml.get(r.tag)">
+            </v-card-text>
+          </v-expand-transition>
         </template>
-      </mdui-card>
+      </v-card>
       <div class="center">
-        <mdui-button variant="outlined" end-icon="open_in_new" :href="`${REPO_URL}/releases`" target="_blank">
+        <v-btn variant="outlined" append-icon="open_in_new" :href="`${REPO_URL}/releases`" target="_blank">
           {{ $t('download.allReleases') }}
-        </mdui-button>
+        </v-btn>
       </div>
     </section>
   </template>

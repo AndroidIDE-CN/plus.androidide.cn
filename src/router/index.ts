@@ -4,6 +4,8 @@ import HomeView from '@/views/HomeView.vue'
 // 新增路由时同步修改 scripts/spa-fallback.mjs 的 ROUTES
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
+  // 切换页面时回到顶部，浏览器前进后退时恢复原位置
+  scrollBehavior: (_to, _from, saved) => saved ?? { top: 0 },
   routes: [
     {
       path: '/',

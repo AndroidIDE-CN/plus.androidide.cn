@@ -7,9 +7,11 @@ export interface DocEntry {
 /** 文档顺序，决定侧边栏与上一篇/下一篇 */
 export const DOCS: DocEntry[] = [
     {id: 'getting-started', icon: 'rocket_launch'},
+    {id: 'home-plugins', icon: 'home'},
     {id: 'project-build', icon: 'build'},
     {id: 'java-compiler', icon: 'code'},
     {id: 'ndk-cmake', icon: 'memory'},
+    {id: 'editor-preview', icon: 'preview'},
     {id: 'debug-logcat', icon: 'bug_report'},
     {id: 'signing-protection', icon: 'verified_user'},
     {id: 'terminal', icon: 'terminal'},

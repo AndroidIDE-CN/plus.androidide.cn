@@ -21,17 +21,15 @@ On first launch, the setup wizard walks you through:
 | Build tools | Install the tools needed to build |
 | Basic settings | Pick a theme, editor options and more |
 
-You can run the wizard again later from the home menu.
+You can run the wizard again from the home screen menu. Without storage permission, the home screen also points you back to the setup.
 
 ## 3. Home screen
 
-The home screen has three tabs: **Projects**, **Plugins** and **Share**.
+The home screen has **Projects**, **Plugins** and **Share** tabs at the bottom. Creating, opening and cloning projects all live in the round button at the bottom right of the Projects tab. See [Home, plugins and sharing](/docs/home-plugins).
 
-- **Projects**: recent projects. The floating button creates a project, opens a local one or clones from Git.
-- **Plugins**: toggles and details for built-in features and third-party plugins.
-- **Share**: browse projects shared by the community and import them.
+To skip the home screen: **Settings → General → Window → Open editor on launch**. **Menu → Home** in the editor brings you back.
 
-To open the editor directly on launch, enable “Open editor on launch” in settings. The “Home” item in the editor menu brings you back.
+> In these docs, “Menu” is the main menu at the top right of the editor, and “Settings” is **Menu → More → Settings**. The settings home has a search box that jumps straight to any option. Menu names are given in English; the app shows them in your interface language.
 
 ## 4. Your first build
 

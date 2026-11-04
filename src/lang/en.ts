@@ -1,3 +1,5 @@
+import features from './features.en'
+
 export default {
   menu: {
     home: 'Home',
@@ -64,137 +66,19 @@ export default {
   },
   features: {
     title: 'Features',
-    intro: 'AIDE Plus rewrites the build system, language support and toolchains of AIDE. Implemented features by area:',
+    intro: 'AIDE Plus rewrites the build system, language support and toolchains of AIDE. Implemented features by area, with where to open each one and how to use it (based on the 2.3.5.0 UI).',
     plannedTitle: 'Planned',
     planned: [
       'More completion (LSP)',
-      'Apks / AAB generation',
-      'Visual manifest editing',
-      'Vector asset import',
-      'Rewritten layout preview'
+      'Apks / AAB generation'
     ],
     filterAll: 'All',
     search: 'Search features',
     noMatch: 'No matching features',
-    cat: {
-      build: {
-        title: 'Build system',
-        items: [
-          'Optimized and rewritten build service',
-          'aapt replaced by aapt2, dx replaced by D8, with D8 obfuscation',
-          'R class generation and DEX grouping rewritten after AGP, so large projects no longer run out of memory',
-          'ViewBinding, DataBinding, annotation processors, core library desugaring and full BuildConfig',
-          'Updated manifest merger and APK resource alignment',
-          'ApkSign supports v1 to v3 signatures',
-          'Fixed silent install, with support for Shizuku and more installers',
-          'Gradle command builds: run Gradle tasks or custom commands in Termux, Linux or the system shell'
-        ]
-      },
-      java: {
-        title: 'Java',
-        items: [
-          'Part of Java 8, 9 and 11 syntax in the default analyzer',
-          'Java 23 compilation through ECJ (enable it in settings)',
-          'Formatting of modern Java through ECJ',
-          'Lambda compilation (ECJ)',
-          'Custom class parser for newer class file features',
-          'Java projects can use the Android API',
-          'Semantic highlighting for Java'
-        ]
-      },
-      kotlin: {
-        title: 'Kotlin',
-        items: [
-          'Completion, live errors, import fixes and navigation by the AIDE Plus engine (official Kotlin 2.4.20 parser)',
-          'kotlinc and KSP share one compiler, keeping the toolchain small',
-          'Kotlin code style settings'
-        ]
-      },
-      deps: {
-        title: 'Gradle and dependencies',
-        items: [
-          'Rewritten Gradle parser',
-          'New Maven downloader with BOM support',
-          'runtimeOnly, compileOnly, libgdxNatives and exclude',
-          'Visual editing and update checks for libs.versions.toml',
-          'Automatic Android variant selection for multiplatform libraries',
-          'Parent POM version inheritance, timestamped SNAPSHOTs and sha1 verification',
-          'AndroidX as the default framework'
-        ]
-      },
-      native: {
-        title: 'NDK and CMake',
-        items: [
-          'CMake builds',
-          'Built-in NDK / CMake manager: NDK r17c to r29, CMake 3.10.2 to 3.31.4',
-          'SHA-256 verification, resumable downloads and per-version directories',
-          'CMake execution permission repair, with an Android linker fallback on no-exec storage',
-          'ndkVersion, buildToolsVersion, test runner and multidex in module properties'
-        ]
-      },
-      editor: {
-        title: 'Editor',
-        items: [
-          'More syntax highlighting and custom code colors',
-          'Fixed lost completion and highlighting, plus basic syntax completion',
-          'XML completion follows the project compileSdk',
-          'Completion, errors and navigation for AIDL, CMake and TOML',
-          'Jump to sources of libraries and android.jar',
-          'Three-row symbol bar with undo, redo and save',
-          'TextMate grammar management and comment preview'
-        ]
-      },
-      debug: {
-        title: 'Debugging and logs',
-        items: [
-          'A separate build panel with phases, progress, output and failure history',
-          'BrowserPager Logcat and floating Logcat share source, pause state, filters and history',
-          'Logcat sources: su, Shizuku and ADRT',
-          'Process and tag filter editors with searchable lists, compatible with Android 12+',
-          'ADRT injection and runtime loading for debug and debug-aide variants'
-        ]
-      },
-      protect: {
-        title: 'Signing and protection',
-        items: [
-          'Fixed keystore creation',
-          'Build types can pick an existing signingConfigs entry',
-          'StringFog, BlackObfuscator, DexVMP and DPT Shell integration',
-          'Custom VM library, bridge library and loader class for DexVMP',
-          'Workspace cleanup after packaging and safeguards against oversized input'
-        ]
-      },
-      terminal: {
-        title: 'Terminal and environments',
-        items: [
-          'Built-in Termux terminal with a full-width tab bar, 8 color schemes, extra keys and search',
-          'Download the Termux bootstrap or a Linux distro as a runtime, in the background and resumable',
-          'One-tap Gradle environment setup (JDK 17, Android SDK and aapt2)',
-          'Rename, back up and restore environment instances'
-        ]
-      },
-      ai: {
-        title: 'AI assistant',
-        items: [
-          'Discuss the current project with a model in the side drawer',
-          'Read, search and edit project files, with a diff first and undo for the last round',
-          'OpenAI-compatible, Anthropic and OpenAI Responses APIs',
-          'Skills, remote MCP, sub-agents, long-term memory and web search',
-          'Fill in missing string translations'
-        ]
-      },
-      ui: {
-        title: 'Interface and tools',
-        items: [
-          'New UI and faster cold start',
-          'Full-screen project properties with searchable pickers for SDK, Java and signing',
-          'SDK manager and a unified toolchain manager',
-          'Resource manager, translation editor and XML drawable preview',
-          'Previews for images, archives, audio and video, PDF, SQLite, certificates and fonts',
-          'Fixed in-app Git issues'
-        ]
-      }
-    }
+    where: 'Where',
+    how: 'How',
+    entryOnly: 'Only features with entry points',
+    cat: features
   },
   docs: {
     title: 'Docs',
@@ -205,9 +89,11 @@ export default {
     notFound: 'Document not found',
     items: {
       'getting-started': 'Getting started',
+      'home-plugins': 'Home, plugins and sharing',
       'project-build': 'Projects and builds',
       'java-compiler': 'Java and Kotlin',
       'ndk-cmake': 'NDK and CMake',
+      'editor-preview': 'Editor and previews',
       'debug-logcat': 'Debugging and Logcat',
       'signing-protection': 'Signing and protection',
       'terminal': 'Terminal and AI assistant',

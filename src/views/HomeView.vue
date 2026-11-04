@@ -28,69 +28,94 @@ onMounted(loadStats)
 </script>
 
 <template>
-  <section class="hero">
-    <img class="hero-logo" src="/favicon.png" alt="AIDE Plus" width="96" height="96">
-    <mdui-chip class="hero-badge" icon="android">{{ $t('home.badge') }}</mdui-chip>
-    <h1 class="hero-title">{{ $t('home.title') }}</h1>
-    <p class="hero-subtitle">{{ $t('home.subtitle') }}</p>
-    <div class="hero-actions">
-      <mdui-button icon="download" @click="$router.push('/download')">{{ $t('home.download') }}</mdui-button>
-      <mdui-button variant="tonal" icon="menu_book" @click="$router.push('/docs')">{{ $t('home.docs') }}</mdui-button>
+  <v-sheet class="hero" color="primary" rounded elevation="2">
+    <img class="hero-logo" src="/favicon.png" alt="AIDE Plus" width="88" height="88">
+    <div class="hero-text">
+      <div class="text-overline hero-badge">{{ $t('home.badge') }}</div>
+      <h1 class="hero-title">{{ $t('home.title') }}</h1>
+      <p class="hero-subtitle">{{ $t('home.subtitle') }}</p>
+      <div class="hero-actions">
+        <v-btn color="white" class="text-primary" size="large" prepend-icon="file_download" to="/download">
+          {{ $t('home.download') }}
+        </v-btn>
+        <v-btn variant="outlined" color="white" size="large" prepend-icon="menu_book" to="/docs">
+          {{ $t('home.docs') }}
+        </v-btn>
+      </div>
+      <p v-if="latest" class="hero-version">{{ $t('home.latest', {version: latest.tag}) }}</p>
     </div>
-    <p v-if="latest" class="hero-version">{{ $t('home.latest', {version: latest.tag}) }}</p>
-  </section>
+  </v-sheet>
 
-  <section class="stats-grid" v-if="stats || downloads !== null">
-    <div class="stat" v-if="stats">
-      <div class="stat-value">{{ formatCount(stats.stars) }}</div>
-      <div class="stat-label">{{ $t('home.stats.stars') }}</div>
-    </div>
-    <div class="stat" v-if="stats">
-      <div class="stat-value">{{ formatCount(stats.forks) }}</div>
-      <div class="stat-label">{{ $t('home.stats.forks') }}</div>
-    </div>
-    <div class="stat" v-if="downloads !== null">
-      <div class="stat-value">{{ formatCount(downloads) }}</div>
-      <div class="stat-label">{{ $t('home.stats.downloads') }}</div>
-    </div>
-    <div class="stat" v-if="releaseCount !== null">
-      <div class="stat-value">{{ releaseCount }}</div>
-      <div class="stat-label">{{ $t('home.stats.releases') }}</div>
-    </div>
-  </section>
+  <v-row class="stats-row" v-if="stats || downloads !== null" dense>
+    <v-col v-if="stats" cols="6" sm="3">
+      <v-card class="stat" elevation="1">
+        <div class="stat-value">{{ formatCount(stats.stars) }}</div>
+        <div class="stat-label">{{ $t('home.stats.stars') }}</div>
+      </v-card>
+    </v-col>
+    <v-col v-if="stats" cols="6" sm="3">
+      <v-card class="stat" elevation="1">
+        <div class="stat-value">{{ formatCount(stats.forks) }}</div>
+        <div class="stat-label">{{ $t('home.stats.forks') }}</div>
+      </v-card>
+    </v-col>
+    <v-col v-if="downloads !== null" cols="6" sm="3">
+      <v-card class="stat" elevation="1">
+        <div class="stat-value">{{ formatCount(downloads) }}</div>
+        <div class="stat-label">{{ $t('home.stats.downloads') }}</div>
+      </v-card>
+    </v-col>
+    <v-col v-if="releaseCount !== null" cols="6" sm="3">
+      <v-card class="stat" elevation="1">
+        <div class="stat-value">{{ releaseCount }}</div>
+        <div class="stat-label">{{ $t('home.stats.releases') }}</div>
+      </v-card>
+    </v-col>
+  </v-row>
 
   <section class="section">
     <h2 class="section-title">{{ $t('home.highlightsTitle') }}</h2>
-    <div class="card-grid">
-      <mdui-card v-for="h in HIGHLIGHTS" :key="h.id" class="feature-card" variant="filled" clickable
-                 @click="$router.push(h.to)">
-        <mdui-icon :name="h.icon" class="feature-icon"></mdui-icon>
-        <h3>{{ $t(`home.highlights.${h.id}.title`) }}</h3>
-        <p>{{ $t(`home.highlights.${h.id}.desc`) }}</p>
-      </mdui-card>
-    </div>
+    <v-row>
+      <v-col v-for="h in HIGHLIGHTS" :key="h.id" cols="12" sm="6" lg="4">
+        <v-card class="feature-card" elevation="2" :to="h.to">
+          <v-card-item>
+            <template #prepend>
+              <v-avatar color="primary" variant="tonal" rounded="circle">
+                <v-icon :icon="h.icon"></v-icon>
+              </v-avatar>
+            </template>
+            <v-card-title>{{ $t(`home.highlights.${h.id}.title`) }}</v-card-title>
+          </v-card-item>
+          <v-card-text>{{ $t(`home.highlights.${h.id}.desc`) }}</v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
   </section>
 
   <section class="section">
     <h2 class="section-title">{{ $t('home.stepsTitle') }}</h2>
-    <ol class="steps">
-      <li v-for="(s, i) in STEPS" :key="s.id" class="step">
-        <span class="step-index">{{ i + 1 }}</span>
-        <div>
-          <h3>{{ $t(`home.steps.${s.id}.title`) }}</h3>
-          <p>{{ $t(`home.steps.${s.id}.desc`) }}</p>
-        </div>
-      </li>
-    </ol>
+    <v-card elevation="1">
+      <v-list lines="two">
+        <template v-for="(s, i) in STEPS" :key="s.id">
+          <v-divider v-if="i > 0" inset></v-divider>
+          <v-list-item :title="$t(`home.steps.${s.id}.title`)" :subtitle="$t(`home.steps.${s.id}.desc`)">
+            <template #prepend>
+              <v-avatar color="primary">{{ i + 1 }}</v-avatar>
+            </template>
+          </v-list-item>
+        </template>
+      </v-list>
+    </v-card>
   </section>
 
   <section class="section">
     <h2 class="section-title">{{ $t('home.communityTitle') }}</h2>
     <p class="section-desc">{{ $t('home.communityDesc') }}</p>
     <div class="chip-row">
-      <mdui-chip v-for="(c, i) in COMMUNITY" :key="i" :icon="c.icon" :href="c.url" target="_blank" rel="noopener">
-        {{ $t(`about.community.${c.nameKey}`) }}<template v-if="c.extra"> {{ c.extra }}</template>
-      </mdui-chip>
+      <v-chip v-for="(c, i) in COMMUNITY" :key="i" :prepend-icon="c.icon" :href="c.url" target="_blank"
+              rel="noopener" color="primary" variant="outlined">
+        {{ $t(`about.community.${c.nameKey}`) }}<template v-if="c.extra">&nbsp;{{ c.extra }}</template>
+      </v-chip>
     </div>
   </section>
 </template>

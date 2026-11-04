@@ -19,46 +19,50 @@ const THANKS = [
     <p>{{ $t('about.intro') }}</p>
   </header>
 
-  <mdui-card class="notice-card" variant="filled">
-    <h2><mdui-icon name="gavel"></mdui-icon>{{ $t('about.noticeTitle') }}</h2>
-    <p>{{ $t('about.notice') }}</p>
-  </mdui-card>
+  <v-alert type="warning" variant="tonal" border="start" icon="gavel" :title="$t('about.noticeTitle')">
+    {{ $t('about.notice') }}
+  </v-alert>
 
   <section class="section">
     <h2 class="section-title">{{ $t('about.membersTitle') }}</h2>
-    <div class="member-grid">
-      <a v-for="m in MEMBERS" :key="m.name" class="member" :href="m.url" target="_blank" rel="noopener">
-        <mdui-avatar :src="m.github ? `https://github.com/${m.github}.png?size=96` : undefined">
-          {{ m.name.slice(0, 1) }}
-        </mdui-avatar>
-        <div>
-          <div class="member-name">{{ m.name }}</div>
-          <div class="member-role">{{ $t(`about.roles.${m.roleKey}`) }}</div>
-        </div>
-      </a>
-    </div>
+    <v-row dense>
+      <v-col v-for="m in MEMBERS" :key="m.name" cols="12" sm="6" md="4">
+        <v-card elevation="1" :href="m.url" target="_blank" rel="noopener">
+          <v-card-item :title="m.name" :subtitle="$t(`about.roles.${m.roleKey}`)">
+            <template #prepend>
+              <v-avatar color="primary">
+                <v-img v-if="m.github" :src="`https://github.com/${m.github}.png?size=96`" :alt="m.name">
+                  <template #error><span>{{ m.name.slice(0, 1) }}</span></template>
+                </v-img>
+                <span v-else>{{ m.name.slice(0, 1) }}</span>
+              </v-avatar>
+            </template>
+          </v-card-item>
+        </v-card>
+      </v-col>
+    </v-row>
   </section>
 
   <section class="section">
     <h2 class="section-title">{{ $t('about.communityTitle') }}</h2>
-    <mdui-list class="link-list">
-      <mdui-list-item v-for="(c, i) in COMMUNITY" :key="i" :icon="c.icon" end-icon="open_in_new"
-                      :href="c.url" target="_blank" rel="noopener">
-        {{ $t(`about.community.${c.nameKey}`) }}
-        <span slot="description">{{ c.extra || c.url }}</span>
-      </mdui-list-item>
-    </mdui-list>
+    <v-card elevation="1">
+      <v-list lines="two">
+        <v-list-item v-for="(c, i) in COMMUNITY" :key="i" :prepend-icon="c.icon" append-icon="open_in_new"
+                     :href="c.url" target="_blank" rel="noopener"
+                     :title="$t(`about.community.${c.nameKey}`)" :subtitle="c.extra || c.url"></v-list-item>
+      </v-list>
+    </v-card>
   </section>
 
   <section class="section">
     <h2 class="section-title">{{ $t('about.thanksTitle') }}</h2>
     <p class="section-desc">{{ $t('about.thanksDesc') }}</p>
-    <mdui-list class="link-list">
-      <mdui-list-item v-for="p in THANKS" :key="p.key" icon="favorite_border" end-icon="open_in_new"
-                      :href="p.url" target="_blank" rel="noopener">
-        {{ p.name }}
-        <span slot="description">{{ $t(`about.thanks.${p.key}`) }}</span>
-      </mdui-list-item>
-    </mdui-list>
+    <v-card elevation="1">
+      <v-list lines="two">
+        <v-list-item v-for="p in THANKS" :key="p.key" prepend-icon="favorite_border" append-icon="open_in_new"
+                     :href="p.url" target="_blank" rel="noopener"
+                     :title="p.name" :subtitle="$t(`about.thanks.${p.key}`)"></v-list-item>
+      </v-list>
+    </v-card>
   </section>
 </template>
