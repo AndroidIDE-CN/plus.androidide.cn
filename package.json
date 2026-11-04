@@ -5,18 +5,22 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node scripts/fetch-releases.mjs",
     "build": "run-p type-check \"build-only {@}\" --",
+    "postbuild": "node scripts/spa-fallback.mjs",
     "preview": "vite preview",
     "build-only": "vite build",
-    "type-check": "vue-tsc --build --force"
+    "type-check": "vue-tsc --build --force",
+    "fetch-releases": "node scripts/fetch-releases.mjs"
   },
   "dependencies": {
-    "vue": "^3.4.29",
-    "vue-router": "^4.3.3",
-    "vue-i18n": "10.0.5",
-    "mdui": "^2.1.2",
+    "axios": "^1.7.7",
+    "dompurify": "^3.4.17",
     "marked": "^14.1.2",
-    "axios": "^1.7.7"
+    "mdui": "^2.1.2",
+    "vue": "^3.4.29",
+    "vue-i18n": "10.0.5",
+    "vue-router": "^4.3.3"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
@@ -25,10 +29,13 @@
     "@vitejs/plugin-vue-jsx": "^4.0.0",
     "@vue/tsconfig": "^0.5.1",
     "npm-run-all2": "^6.2.0",
+    "terser": "^5.34.1",
     "typescript": "~5.4.0",
     "vite": "^5.3.1",
-    "vue-tsc": "^2.0.21",
-    "terser": "^5.34.1",
-    "vite-plugin-html-minifier-terser": "^3.8.0"
+    "vite-plugin-html-minifier-terser": "^3.8.0",
+    "vue-tsc": "^2.0.21"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

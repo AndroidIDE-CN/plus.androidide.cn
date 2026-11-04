@@ -3,85 +3,111 @@ import {RouterView} from 'vue-router'
 import 'mdui/mdui.css'
 import 'mdui'
 import {changeLanguage} from "@/lang/i18n"
+import ColorPicker from "@/components/ColorPicker.vue"
 </script>
 
 <script lang="ts">
 import {CUSTOM_THEME_COLOR} from "@/config"
 import {getTheme, Menu, setColorScheme, setTheme} from "mdui"
 import i18n from "@/lang/i18n"
+import router from "@/router"
 import type {Theme} from "mdui/internal/theme";
 
+/** 宽屏断点，与 MDUI 的 --mdui-breakpoint-md 一致 */
+const WIDE_SCREEN = 840
+
+/** 侧边栏导航项 */
+const NAV_ITEMS = [
+  {path: '/', icon: 'home', titleKey: 'menu.home'},
+  {path: '/feature', icon: 'featured_play_list', titleKey: 'menu.feature'},
+  {path: '/docs', icon: 'menu_book', titleKey: 'menu.docs'},
+  {path: '/download', icon: 'download', titleKey: 'menu.download'},
+  {path: '/about', icon: 'alternate_email', titleKey: 'menu.about'}
+]
+
 if (CUSTOM_THEME_COLOR) setColorScheme(CUSTOM_THEME_COLOR)
-let path = document.location.pathname.split('/').pop()
-let title = (path) ? `menu.${path}` : 'menu.home'
-
-function rgbToHex(rgb: string) {
-  // 匹配 rgb 或 rgba 值
-  let result = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([01]|0?\.\d+))?\)$/);
-
-  if (!result) {
-    return rgb; // 如果不是rgb/rgba，直接返回原值（如已有hex值）
-  }
-
-  // 将 RGB 分量转换为 16 进制，确保两位数
-  let r = parseInt(result[1]).toString(16).padStart(2, '0');
-  let g = parseInt(result[2]).toString(16).padStart(2, '0');
-  let b = parseInt(result[3]).toString(16).padStart(2, '0');
-
-  return `#${r}${g}${b}`.toUpperCase(); // 返回大写的 HEX 颜色
-}
-
-document.title = `${i18n.global.t(title)} - AIDE Plus`
 setTheme((localStorage.getItem('theme') as Theme) ?? 'auto')
+
 export default {
   data() {
     return {
-      isOpen: false,
-      appBarTitle: this.$t(title),
+      isOpen: window.innerWidth >= WIDE_SCREEN,
+      appBarTitle: '',
       displayIcon: (getTheme() === 'dark') ? 'dark_mode' : 'light_mode',
-      displayIconButton: (window.innerWidth >= 840)
+      displayIconButton: (window.innerWidth >= WIDE_SCREEN),
+      navItems: NAV_ITEMS,
+      year: new Date().getFullYear()
     }
   },
   methods: {
-    async menuButton() {
+    /** 切换侧边栏 */
+    menuButton() {
       this.isOpen = !this.isOpen
     },
-    async menuClick(path: string, title: string) {
-      this.$router.push(path).then(() => {
-        title = this.$t(title)
-        this.appBarTitle = title
-        document.title = `${title} - AIDE Plus`
-        if (window.innerWidth < 840) this.isOpen = false
-      }).catch((e) => {
-        console.log(e)
-      })
+    /**
+     * 判断导航项是否为当前页面，/docs/xxx 也算文档页。
+     * @param path 导航项路径
+     */
+    isActive(path: string): boolean {
+      const current = this.$route.path
+      return path === '/' ? current === '/' : current.startsWith(path)
     },
-    async setColor(event: any) {
-      let background = rgbToHex(window.getComputedStyle(event.target, null)
-          .getPropertyValue('background-color'))
-      localStorage.setItem('themeColor', background)
-      setColorScheme(background)
+    /**
+     * 点击导航项：跳转并在手机端收起侧边栏。
+     * @param path 目标路径
+     */
+    menuClick(path: string) {
+      this.$router.push(path).catch(() => {})
+      if (window.innerWidth < WIDE_SCREEN) this.isOpen = false
     },
-    async handleColorChange(event: any) {
-      localStorage.setItem('themeColor', event.target?.value)
-      setColorScheme(event.target?.value)
+    /**
+     * 根据路由 meta.titleKey 同步标题栏和网页标题。
+     */
+    updateTitle() {
+      const key = (this.$route.meta.titleKey as string) || 'menu.home'
+      this.appBarTitle = this.$t(key)
+      document.title = `${this.appBarTitle} - AIDE Plus`
     },
-    async changeTheme(theme: string) {
+    /**
+     * 切换明暗模式并记住选择。
+     * @param theme light / dark / auto
+     */
+    changeTheme(theme: string) {
       setTheme(theme as Theme)
       localStorage.setItem('theme', theme)
+      this.displayIcon = (getTheme() === 'dark') ? 'dark_mode' : 'light_mode'
     },
-    async onCheckTheme() {
+    /** 主题菜单关闭时刷新图标与选中项 */
+    onCheckTheme() {
       this.displayIcon = (getTheme() === 'dark') ? 'dark_mode' : 'light_mode';
       (document.querySelector('.menu-theme') as Menu).value = [getTheme()]
     },
-    async subCheckTheme() {
+    /** 窄屏菜单关闭时刷新图标 */
+    subCheckTheme() {
       this.displayIcon = (getTheme() === 'dark') ? 'dark_mode' : 'light_mode'
+    },
+    /** 屏幕宽度变化时切换顶栏按钮布局，跨过断点时自动展开或收起侧边栏 */
+    onResize() {
+      const wide = window.innerWidth >= WIDE_SCREEN
+      if (wide !== this.displayIconButton) this.isOpen = wide
+      this.displayIconButton = wide
+    }
+  },
+  watch: {
+    $route() {
+      this.updateTitle()
     }
   },
   mounted() {
-    window.onresize = () => {
-      this.displayIconButton = (window.innerWidth >= 840)
-    }
+    window.addEventListener('resize', this.onResize)
+    router.afterEach((to, from) => {
+      // 切换页面时滚动容器回到顶部；文档页之间切换由文档页自己处理
+      if (to.path !== from.path) document.querySelector('.layout-main')?.scrollTo({top: 0})
+    })
+    this.updateTitle()
+  },
+  unmounted() {
+    window.removeEventListener('resize', this.onResize)
   }
 }
 </script>
@@ -91,7 +117,7 @@ export default {
       <mdui-button-icon class="menu-button" icon="menu" @click="menuButton"></mdui-button-icon>
       <mdui-top-app-bar-title>{{ appBarTitle }}</mdui-top-app-bar-title>
 
-      <mdui-dropdown v-if="!displayIconButton" trigger="hover" @close="subCheckTheme" stay-open-on-click>
+      <mdui-dropdown v-if="!displayIconButton" trigger="click" @close="subCheckTheme" stay-open-on-click>
         <mdui-button-icon icon="more_vert" slot="trigger"></mdui-button-icon>
         <mdui-menu class="more_vert" submenu-trigger="hover click">
           <mdui-menu-item>
@@ -115,19 +141,7 @@ export default {
 
           <mdui-menu-item>
             {{ $t('menu.submenu.color') }}
-            <mdui-card slot="submenu" data-v-e56655cb="" class="card" variant="elevated">
-              <div data-v-e56655cb="" class="color-label">{{ $t('menu.color.preset') }}</div>
-              <div data-v-e56655cb="" class="color-preset">
-                <div data-v-e56655cb="" class="red" @click="setColor($event)"></div>
-                <div data-v-e56655cb="" class="purple" @click="setColor($event)"></div>
-                <div data-v-e56655cb="" class="blue" @click="setColor($event)"></div>
-                <div data-v-e56655cb="" class="green" @click="setColor($event)"></div>
-                <div data-v-e56655cb="" class="yellow" @click="setColor($event)"></div>
-                <div data-v-e56655cb="" class="grey" @click="setColor($event)"></div>
-              </div>
-              <div data-v-e56655cb="" class="color-label">{{ $t('menu.color.custom') }}</div>
-              <input data-v-e56655cb="" type="color" class="color-custom" @input="handleColorChange">
-            </mdui-card>
+            <ColorPicker slot="submenu"/>
           </mdui-menu-item>
         </mdui-menu>
       </mdui-dropdown>
@@ -142,7 +156,7 @@ export default {
 
       <mdui-dropdown v-if="displayIconButton" trigger="hover" @close="onCheckTheme">
         <mdui-button-icon slot="trigger" variant="standard" :icon="displayIcon"></mdui-button-icon>
-        <mdui-menu class="menu-theme" selects="multiple" :value="getTheme()">
+        <mdui-menu class="menu-theme" selects="single" :value="getTheme()">
           <mdui-menu-item class="light" value="light" @click="changeTheme('light')">
             {{ $t('menu.theme.light') }}
           </mdui-menu-item>
@@ -158,42 +172,31 @@ export default {
 
       <mdui-dropdown v-if="displayIconButton" trigger="hover">
         <mdui-button-icon icon="color_lens" slot="trigger"></mdui-button-icon>
-        <mdui-card data-v-e56655cb="" class="card" variant="elevated">
-          <div data-v-e56655cb="" class="color-label">{{ $t('menu.color.preset') }}</div>
-          <div data-v-e56655cb="" class="color-preset">
-            <div data-v-e56655cb="" class="red" @click="setColor($event)"></div>
-            <div data-v-e56655cb="" class="purple" @click="setColor($event)"></div>
-            <div data-v-e56655cb="" class="blue" @click="setColor($event)"></div>
-            <div data-v-e56655cb="" class="green" @click="setColor($event)"></div>
-            <div data-v-e56655cb="" class="yellow" @click="setColor($event)"></div>
-            <div data-v-e56655cb="" class="grey" @click="setColor($event)"></div>
-          </div>
-          <div data-v-e56655cb="" class="color-label">{{ $t('menu.color.custom') }}</div>
-          <input data-v-e56655cb="" type="color" class="color-custom" @input="handleColorChange">
-        </mdui-card>
+        <ColorPicker/>
       </mdui-dropdown>
+
+      <mdui-button-icon v-if="displayIconButton" icon="code" href="https://github.com/AndroidIDE-CN/AIDE-Plus"
+                        target="_blank" rel="noopener"></mdui-button-icon>
     </mdui-top-app-bar>
-    <mdui-navigation-drawer class="navigation-drawer" contained :open="isOpen" @overlay-click="isOpen=false">
+
+    <mdui-navigation-drawer class="navigation-drawer" contained close-on-esc close-on-overlay-click
+                            :open="isOpen" @close="isOpen=false">
       <mdui-list class="navigation-drawer-list">
-        <mdui-menu-item icon="home" @click="menuClick('/','menu.home')">
-          {{ $t('menu.home') }}
-        </mdui-menu-item>
-        <mdui-menu-item icon="featured_play_list" @click="menuClick('/feature','menu.feature')">
-          {{ $t('menu.feature') }}
-        </mdui-menu-item>
-        <mdui-menu-item icon="alternate_email" @click="menuClick('/about','menu.about')">
-          {{ $t('menu.about') }}
-        </mdui-menu-item>
+        <mdui-list-item v-for="item in navItems" :key="item.path" rounded :icon="item.icon"
+                        :active="isActive(item.path)" @click="menuClick(item.path)">
+          {{ $t(item.titleKey) }}
+        </mdui-list-item>
       </mdui-list>
     </mdui-navigation-drawer>
 
     <mdui-layout-main class="layout-main hide-scrollbar">
-      <RouterView/>
-      <mdui-bottom-app-bar scroll-target=".layout-main" scroll-behavior="hide" scroll-threshold="30">
-        <span class="footer-content-text">
-          Copyright © 2024-2025 <a class="footer-content-text" href="https://github.com/hujiayucc" target="_blank">hujiayucc</a> All Rights Reserved.
-        </span>
-      </mdui-bottom-app-bar>
+      <div class="page-wrapper">
+        <RouterView/>
+      </div>
+      <footer class="site-footer">
+        <span>{{ $t('footer.copyright', {year}) }}</span>
+        <span class="site-footer-sub">{{ $t('footer.madeWith') }}</span>
+      </footer>
     </mdui-layout-main>
   </mdui-layout>
 </template>
