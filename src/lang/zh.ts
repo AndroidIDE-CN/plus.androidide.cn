@@ -1,3 +1,5 @@
+import features from './features.zh'
+
 export default {
   menu: {
     home: "首页",
@@ -64,137 +66,19 @@ export default {
   },
   features: {
     title: "功能特性",
-    intro: "AIDE Plus 在 AIDE 的基础上重写了构建、语言支持和工具链。下面按模块列出已经实现的功能。",
+    intro: "AIDE Plus 在 AIDE 的基础上重写了构建、语言支持和工具链。下面按模块列出已经实现的功能，并注明每项功能的打开位置和使用方式（按 2.3.5.0 版本界面整理）。",
     plannedTitle: "计划实现",
     planned: [
       "更多补全（LSP）",
-      "Apks / AAB 的生成",
-      "清单文件可视化编辑",
-      "矢量图获取",
-      "重写布局可视化"
+      "Apks / AAB 的生成"
     ],
     filterAll: "全部",
     search: "搜索功能",
     noMatch: "没有匹配的功能",
-    cat: {
-      build: {
-        title: "构建系统",
-        items: [
-          "构建服务优化和重写",
-          "aapt 更替为 aapt2，dx 更替为 D8，并使用 D8 进行混淆",
-          "参照 AGP 重写 R 类生成与 DEX 分组合并，大项目不再内存不足",
-          "支持 ViewBinding、DataBinding、注解处理器、核心库脱糖与完整的 BuildConfig",
-          "清单合并工具更新，APK 资源对齐",
-          "ApkSign 支持 v1 到 v3 签名",
-          "修复静默安装，支持 Shizuku 等更多安装器",
-          "Gradle 命令构建：在 Termux、Linux 或系统 Shell 中执行 Gradle 任务或自定义命令"
-        ]
-      },
-      java: {
-        title: "Java 语言",
-        items: [
-          "默认语法分析支持部分 Java 8、9、11 语法",
-          "通过 ECJ 编译 Java 23（需在设置中开启）",
-          "通过 ECJ 格式化高版本 Java 代码",
-          "Lambda 编译（ECJ）",
-          "自定义 class 解析器，支持高版本 class 特性",
-          "Java 项目可以使用 Android API",
-          "Java 语义高亮"
-        ]
-      },
-      kotlin: {
-        title: "Kotlin",
-        items: [
-          "补全、实时错误、导入修复与跳转使用 AIDE Plus 自有引擎（Kotlin 2.4.20 官方解析器）",
-          "kotlinc 与 KSP 共用一份编译器，工具链更小",
-          "Kotlin 代码风格设置"
-        ]
-      },
-      deps: {
-        title: "Gradle 与依赖",
-        items: [
-          "重写 Gradle 解析器",
-          "新的 Maven 下载器，支持 BOM",
-          "支持 runtimeOnly、compileOnly、libgdxNatives 与 exclude",
-          "版本目录 libs.versions.toml 可视化编辑与更新检查",
-          "多平台库自动选择 Android 变体",
-          "按 Maven 规则继承父 POM 版本，支持带时间戳的 SNAPSHOT，下载后校验 sha1",
-          "AIDE 默认框架替换为 AndroidX"
-        ]
-      },
-      native: {
-        title: "NDK 与 CMake",
-        items: [
-          "支持 CMake 构建",
-          "内置 NDK / CMake 工具链管理器：NDK r17c 到 r29，CMake 3.10.2 到 3.31.4",
-          "下载支持 SHA-256 校验与断点续传，各版本独立目录",
-          "自动修复 CMake 执行权限，私有目录 no-exec 时回退到 Android linker",
-          "模块属性页可设置 ndkVersion、buildToolsVersion、测试运行器与 multidex"
-        ]
-      },
-      editor: {
-        title: "编辑器",
-        items: [
-          "更多语法高亮，代码颜色可自定义",
-          "修复补全和高亮丢失问题，新增基础语法补全",
-          "XML 补全跟随项目 compileSdk",
-          "AIDL、CMake、TOML 的补全、错误与跳转",
-          "跳转到依赖库与 android.jar 的源代码",
-          "符号栏默认三行，带撤销、重做和保存",
-          "TextMate 语法管理与注释预览"
-        ]
-      },
-      debug: {
-        title: "调试与日志",
-        items: [
-          "独立的构建流程页，显示构建阶段、进度、输出和失败历史",
-          "BrowserPager Logcat 与悬浮 Logcat 共享来源、暂停、过滤条件和历史",
-          "Logcat 来源支持 su、Shizuku 与 ADRT",
-          "进程 / 标签过滤编辑框与可搜索候选列表，兼容 Android 12 及以上",
-          "debug 与 debug-aide 变体的 ADRT 注入和运行时加载"
-        ]
-      },
-      protect: {
-        title: "签名与加固",
-        items: [
-          "修复创建签名的问题",
-          "构建类型可直接选择已有的 signingConfigs",
-          "集成 StringFog、BlackObfuscator、DexVMP 与 DPT Shell",
-          "DexVMP 支持自定义 VM 库名、桥接库名和 loader 类",
-          "构建结束自动清理工作目录，限制超大输入避免内存不足"
-        ]
-      },
-      terminal: {
-        title: "终端与运行环境",
-        items: [
-          "内置 Termux 终端：全宽标签栏、8 套配色、额外按键与查找",
-          "可下载 Termux bootstrap 或 Linux 发行版作为运行环境，后台下载并断点续传",
-          "一键配置 Gradle 构建环境（JDK 17、Android SDK 与 aapt2）",
-          "环境实例可重命名、备份与恢复"
-        ]
-      },
-      ai: {
-        title: "AI 助手",
-        items: [
-          "在右侧抽屉中与模型讨论当前项目",
-          "读取、搜索、修改项目文件，修改前显示差异，可撤销上一轮",
-          "支持 OpenAI 兼容、Anthropic 与 OpenAI Responses 接口",
-          "支持技能、远程 MCP、子代理、长期记忆与联网搜索",
-          "调用翻译补齐字符串资源"
-        ]
-      },
-      ui: {
-        title: "界面与工具",
-        items: [
-          "全新 UI，应用冷启动优化",
-          "项目属性全屏页面，SDK、Java、签名等改用可搜索列表",
-          "SDK 管理器与统一的工具链管理页",
-          "资源管理器、翻译编辑器与 XML 图形资源预览",
-          "图片、压缩包、音视频、PDF、SQLite、证书、字体等文件预览",
-          "修复软件内的 Git 问题"
-        ]
-      }
-    }
+    where: "打开位置",
+    how: "使用方式",
+    entryOnly: "只看有入口说明的功能",
+    cat: features
   },
   docs: {
     title: "使用文档",
@@ -205,9 +89,11 @@ export default {
     notFound: "没有找到这篇文档",
     items: {
       "getting-started": "快速开始",
+      "home-plugins": "首页、插件与共享",
       "project-build": "项目与构建",
       "java-compiler": "Java 与 Kotlin",
       "ndk-cmake": "NDK 与 CMake",
+      "editor-preview": "编辑器与预览",
       "debug-logcat": "调试与 Logcat",
       "signing-protection": "签名与加固",
       "terminal": "终端与 AI 助手",

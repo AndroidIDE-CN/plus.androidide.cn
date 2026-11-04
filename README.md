@@ -2,14 +2,14 @@
 
 AIDE Plus 官网源码：功能介绍、使用文档和下载页，支持手机与电脑。
 
-技术栈：Node.js 20+、Vue 3、Vite、MDUI 2、vue-i18n（中文 / English）。
+技术栈：Node.js 20+、Vue 3、Vite、Vuetify 4（Material Design 2 蓝图）、vue-i18n（中文 / English）。
 
 ## 页面
 
 | 路径 | 内容 |
 | --- | --- |
 | `/` | 首页：简介、亮点、仓库统计 |
-| `/feature` | 功能特性，可按分类筛选和搜索 |
+| `/feature` | 功能特性，每项标注打开位置与使用方式，可按分类筛选和搜索 |
 | `/docs/:id` | 使用文档，Markdown 位于 `src/docs/<语言>/` |
 | `/download` | 下载页，数据来自 GitHub Releases |
 | `/about` | 项目成员、社区入口与开源说明 |
@@ -33,7 +33,7 @@ npm run preview    # 预览构建结果
 
 ## 修改内容
 
-- 文案：`src/lang/zh.ts`、`src/lang/en.ts`
+- 文案：`src/lang/zh.ts`、`src/lang/en.ts`；功能列表（含打开位置、使用方式）在 `src/lang/features.zh.ts`、`src/lang/features.en.ts`
 - 功能分类与首页亮点：`src/data/features.ts`
 - 文档：在 `src/docs/zh/` 与 `src/docs/en/` 新建同名 `.md`，再在 `src/docs/index.ts` 中登记顺序和图标，并在 i18n 的 `docs.items` 中加标题
 - 社区链接、成员、下载线路：`src/config.ts`

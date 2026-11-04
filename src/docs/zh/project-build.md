@@ -34,18 +34,38 @@ dependencies {
 
 ## 项目属性
 
-项目属性是一个全屏页面，工程设置与各模块分开显示：
+在文件浏览器中打开项目属性对话框，点 **可视化编辑** 进入全屏的项目属性页。工程设置与各模块分开显示，模块内按分类逐层进入：
 
 - Android 基础配置：`compileSdk`、`minSdk`、`ndkVersion`、`buildToolsVersion`、`testInstrumentationRunner`、`multiDexEnabled` 等。
 - 构建类型、签名配置、依赖和保护插件。
 - 保存时会保留脚本中未修改的原文，不会重写整个 Gradle 文件。
 
+## 构建流程页
+
+点运行后会显示独立的“构建”页，列出各模块的构建步骤、进度和输出，可以停止或复制。构建失败时也可以从错误列表打开它。
+
+## 其它构建选项
+
+都在 **设置 → 构建与运行**：
+
+| 分组 | 选项 |
+| --- | --- |
+| SDK 与依赖 | android.jar 文件、刷新 Maven 仓库、Maven 仓库目录 |
+| 构建 | 启用 adrt 日志注入、解除 Java 项目 API 限制、重定义 APK 构建路径（工程/build/bin/）、Java 项目 Dex 的 minSdk、启用 aapt2 |
+| 运行 | 静默安装（Root）、使用 Shizuku 安装、自定义安装器、终端环境 |
+
 ## Gradle 命令构建
 
-如果需要运行真正的 Gradle（例如使用自定义插件），可以开启 Gradle 命令构建。开启后运行按钮可以选择：
+如果需要运行真正的 Gradle（例如使用自定义插件），在 **设置 → 构建与运行 → Gradle 命令构建** 中开启。开启后运行按钮可以选择：
 
 - 默认构建（AIDE Plus 内置构建）
 - 指定的 Gradle 任务
 - 自定义 sh 命令
 
-命令会在所选容器（Termux、Linux 发行版或系统 Shell）中执行，并可设置 `JAVA_HOME` 等环境变量。终端环境页可以一键配置 JDK 17、Android SDK 与 aapt2，详见 [终端与 AI 助手](/docs/terminal)。
+同一分组里还有三项：
+
+- **构建容器**：命令在哪个环境中执行（Termux、Linux 发行版或系统 Shell），默认跟随终端。
+- **环境变量**：每行一个 `KEY=VALUE`，例如 `JAVA_HOME=/usr/lib/jvm/java-17`。
+- **自定义构建命令**：在运行按钮菜单中列出的 sh 命令，例如 `./gradlew assembleDebug`。
+
+在终端里构建成功后，会弹出本次生成的 APK，可以直接安装，或用项目属性中已保存的签名配置重新签名后安装。终端环境页可以一键配置 JDK 17、Android SDK 与 aapt2，详见 [终端与 AI 助手](/docs/terminal)。

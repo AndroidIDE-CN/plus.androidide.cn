@@ -1,202 +1,139 @@
 <script setup lang="ts">
-import {RouterView} from 'vue-router'
-import 'mdui/mdui.css'
-import 'mdui'
+import {computed, ref, watch} from "vue"
+import {RouterView, useRoute, useRouter} from "vue-router"
+import {useI18n} from "vue-i18n"
+import {useDisplay} from "vuetify"
 import {changeLanguage} from "@/lang/i18n"
+import {applyThemeMode, savedThemeMode} from "@/plugins/vuetify"
+import type {ThemeMode} from "@/plugins/vuetify"
 import ColorPicker from "@/components/ColorPicker.vue"
-</script>
-
-<script lang="ts">
-import {CUSTOM_THEME_COLOR} from "@/config"
-import {getTheme, Menu, setColorScheme, setTheme} from "mdui"
-import i18n from "@/lang/i18n"
-import router from "@/router"
-import type {Theme} from "mdui/internal/theme";
-
-/** 宽屏断点，与 MDUI 的 --mdui-breakpoint-md 一致 */
-const WIDE_SCREEN = 840
+import {REPO_URL} from "@/config"
 
 /** 侧边栏导航项 */
 const NAV_ITEMS = [
   {path: '/', icon: 'home', titleKey: 'menu.home'},
   {path: '/feature', icon: 'featured_play_list', titleKey: 'menu.feature'},
   {path: '/docs', icon: 'menu_book', titleKey: 'menu.docs'},
-  {path: '/download', icon: 'download', titleKey: 'menu.download'},
-  {path: '/about', icon: 'alternate_email', titleKey: 'menu.about'}
+  {path: '/download', icon: 'file_download', titleKey: 'menu.download'},
+  {path: '/about', icon: 'info', titleKey: 'menu.about'}
 ]
 
-if (CUSTOM_THEME_COLOR) setColorScheme(CUSTOM_THEME_COLOR)
-setTheme((localStorage.getItem('theme') as Theme) ?? 'auto')
+/** 明暗模式菜单 */
+const THEME_MODES: { mode: ThemeMode, icon: string }[] = [
+  {mode: 'light', icon: 'light_mode'},
+  {mode: 'dark', icon: 'dark_mode'},
+  {mode: 'auto', icon: 'brightness_auto'}
+]
 
-export default {
-  data() {
-    return {
-      isOpen: window.innerWidth >= WIDE_SCREEN,
-      appBarTitle: '',
-      displayIcon: (getTheme() === 'dark') ? 'dark_mode' : 'light_mode',
-      displayIconButton: (window.innerWidth >= WIDE_SCREEN),
-      navItems: NAV_ITEMS,
-      year: new Date().getFullYear()
-    }
-  },
-  methods: {
-    /** 切换侧边栏 */
-    menuButton() {
-      this.isOpen = !this.isOpen
-    },
-    /**
-     * 判断导航项是否为当前页面，/docs/xxx 也算文档页。
-     * @param path 导航项路径
-     */
-    isActive(path: string): boolean {
-      const current = this.$route.path
-      return path === '/' ? current === '/' : current.startsWith(path)
-    },
-    /**
-     * 点击导航项：跳转并在手机端收起侧边栏。
-     * @param path 目标路径
-     */
-    menuClick(path: string) {
-      this.$router.push(path).catch(() => {})
-      if (window.innerWidth < WIDE_SCREEN) this.isOpen = false
-    },
-    /**
-     * 根据路由 meta.titleKey 同步标题栏和网页标题。
-     */
-    updateTitle() {
-      const key = (this.$route.meta.titleKey as string) || 'menu.home'
-      this.appBarTitle = this.$t(key)
-      document.title = `${this.appBarTitle} - AIDE Plus`
-    },
-    /**
-     * 切换明暗模式并记住选择。
-     * @param theme light / dark / auto
-     */
-    changeTheme(theme: string) {
-      setTheme(theme as Theme)
-      localStorage.setItem('theme', theme)
-      this.displayIcon = (getTheme() === 'dark') ? 'dark_mode' : 'light_mode'
-    },
-    /** 主题菜单关闭时刷新图标与选中项 */
-    onCheckTheme() {
-      this.displayIcon = (getTheme() === 'dark') ? 'dark_mode' : 'light_mode';
-      (document.querySelector('.menu-theme') as Menu).value = [getTheme()]
-    },
-    /** 窄屏菜单关闭时刷新图标 */
-    subCheckTheme() {
-      this.displayIcon = (getTheme() === 'dark') ? 'dark_mode' : 'light_mode'
-    },
-    /** 屏幕宽度变化时切换顶栏按钮布局，跨过断点时自动展开或收起侧边栏 */
-    onResize() {
-      const wide = window.innerWidth >= WIDE_SCREEN
-      if (wide !== this.displayIconButton) this.isOpen = wide
-      this.displayIconButton = wide
-    }
-  },
-  watch: {
-    $route() {
-      this.updateTitle()
-    }
-  },
-  mounted() {
-    window.addEventListener('resize', this.onResize)
-    router.afterEach((to, from) => {
-      // 切换页面时滚动容器回到顶部；文档页之间切换由文档页自己处理
-      if (to.path !== from.path) document.querySelector('.layout-main')?.scrollTo({top: 0})
-    })
-    this.updateTitle()
-  },
-  unmounted() {
-    window.removeEventListener('resize', this.onResize)
-  }
+const route = useRoute()
+const router = useRouter()
+const {t, locale} = useI18n()
+const {mdAndUp} = useDisplay()
+
+/** 窄屏下抽屉是否打开；宽屏时抽屉常驻 */
+const drawer = ref(mdAndUp.value)
+const themeMode = ref<ThemeMode>(savedThemeMode())
+const year = new Date().getFullYear()
+
+const title = computed(() => t((route.meta.titleKey as string) || 'menu.home'))
+const themeIcon = computed(() => THEME_MODES.find(m => m.mode === themeMode.value)?.icon ?? 'brightness_auto')
+
+/**
+ * 判断导航项是否为当前页面，/docs/xxx 也算文档页。
+ * @param path 导航项路径
+ */
+function isActive(path: string): boolean {
+  return path === '/' ? route.path === '/' : route.path.startsWith(path)
 }
+
+/**
+ * 点击导航项：跳转并在窄屏收起抽屉。
+ * @param path 目标路径
+ */
+function navigate(path: string) {
+  router.push(path).catch(() => {})
+  if (!mdAndUp.value) drawer.value = false
+}
+
+/**
+ * 切换明暗模式。
+ * @param mode light / dark / auto
+ */
+function setThemeMode(mode: ThemeMode) {
+  themeMode.value = mode
+  applyThemeMode(mode)
+}
+
+// 网页标题跟随路由；跨过断点时自动展开或收起抽屉
+watch(title, v => document.title = `${v} - AIDE Plus`, {immediate: true})
+watch(mdAndUp, v => drawer.value = v)
 </script>
+
 <template>
-  <mdui-layout class="root-contained">
-    <mdui-top-app-bar scroll-behavior="elevate" scroll-target=".layout-main">
-      <mdui-button-icon class="menu-button" icon="menu" @click="menuButton"></mdui-button-icon>
-      <mdui-top-app-bar-title>{{ appBarTitle }}</mdui-top-app-bar-title>
+  <v-app>
+    <v-app-bar color="primary" elevation="4" density="comfortable">
+      <template #prepend>
+        <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      </template>
+      <v-app-bar-title>{{ title }}</v-app-bar-title>
 
-      <mdui-dropdown v-if="!displayIconButton" trigger="click" @close="subCheckTheme" stay-open-on-click>
-        <mdui-button-icon icon="more_vert" slot="trigger"></mdui-button-icon>
-        <mdui-menu class="more_vert" submenu-trigger="hover click">
-          <mdui-menu-item>
-           {{ $t('menu.submenu.language') }}
-            <mdui-menu-item slot="submenu" value="zh" @click="changeLanguage('zh')">简体中文</mdui-menu-item>
-            <mdui-menu-item slot="submenu" value="en" @click="changeLanguage('en')">English</mdui-menu-item>
-          </mdui-menu-item>
+      <template #append>
+        <v-menu>
+          <template #activator="{ props }">
+            <v-btn icon="translate" v-bind="props" :title="$t('menu.submenu.language')"></v-btn>
+          </template>
+          <v-list density="compact" :selected="[locale]">
+            <v-list-item value="zh" title="简体中文" @click="changeLanguage('zh')"></v-list-item>
+            <v-list-item value="en" title="English" @click="changeLanguage('en')"></v-list-item>
+          </v-list>
+        </v-menu>
 
-          <mdui-menu-item>
-            {{ $t('menu.submenu.theme') }}
-            <mdui-menu-item slot="submenu" class="light" value="light" @click="changeTheme('light')">
-              {{ $t('menu.theme.light') }}
-            </mdui-menu-item>
-            <mdui-menu-item slot="submenu" class="dark" value="dark" @click="changeTheme('dark')">
-              {{ $t('menu.theme.dark') }}
-            </mdui-menu-item>
-            <mdui-menu-item slot="submenu" class="auto" value="auto" @click="changeTheme('auto')">
-              {{ $t('menu.theme.auto') }}
-            </mdui-menu-item>
-          </mdui-menu-item>
+        <v-menu>
+          <template #activator="{ props }">
+            <v-btn :icon="themeIcon" v-bind="props" :title="$t('menu.submenu.theme')"></v-btn>
+          </template>
+          <v-list density="compact" :selected="[themeMode]">
+            <v-list-item v-for="m in THEME_MODES" :key="m.mode" :value="m.mode" :prepend-icon="m.icon"
+                         :title="$t(`menu.theme.${m.mode}`)" @click="setThemeMode(m.mode)"></v-list-item>
+          </v-list>
+        </v-menu>
 
-          <mdui-menu-item>
-            {{ $t('menu.submenu.color') }}
-            <ColorPicker slot="submenu"/>
-          </mdui-menu-item>
-        </mdui-menu>
-      </mdui-dropdown>
+        <v-menu :close-on-content-click="false">
+          <template #activator="{ props }">
+            <v-btn icon="palette" v-bind="props" :title="$t('menu.submenu.color')"></v-btn>
+          </template>
+          <ColorPicker/>
+        </v-menu>
 
-      <mdui-dropdown v-if="displayIconButton" trigger="hover">
-        <mdui-button-icon icon="translate" slot="trigger"></mdui-button-icon>
-        <mdui-menu class="menu-transition" selects="single" :value="i18n.global.locale.value">
-          <mdui-menu-item value="zh" @click="changeLanguage('zh')">简体中文</mdui-menu-item>
-          <mdui-menu-item value="en" @click="changeLanguage('en')">English</mdui-menu-item>
-        </mdui-menu>
-      </mdui-dropdown>
+        <v-btn class="d-none d-sm-flex" icon="code" :href="REPO_URL" target="_blank" rel="noopener"
+               :title="$t('common.viewOnGithub')"></v-btn>
+      </template>
+    </v-app-bar>
 
-      <mdui-dropdown v-if="displayIconButton" trigger="hover" @close="onCheckTheme">
-        <mdui-button-icon slot="trigger" variant="standard" :icon="displayIcon"></mdui-button-icon>
-        <mdui-menu class="menu-theme" selects="single" :value="getTheme()">
-          <mdui-menu-item class="light" value="light" @click="changeTheme('light')">
-            {{ $t('menu.theme.light') }}
-          </mdui-menu-item>
-          <mdui-menu-item class="dark" value="dark" @click="changeTheme('dark')">
-            {{ $t('menu.theme.dark') }}
-          </mdui-menu-item>
-          <mdui-divider></mdui-divider>
-          <mdui-menu-item class="auto" value="auto" @click="changeTheme('auto')">
-            {{ $t('menu.theme.auto') }}
-          </mdui-menu-item>
-        </mdui-menu>
-      </mdui-dropdown>
+    <v-navigation-drawer v-model="drawer" :permanent="mdAndUp" :temporary="!mdAndUp" width="256">
+      <div class="drawer-brand">
+        <img src="/favicon.png" alt="" width="40" height="40">
+        <div>
+          <div class="drawer-brand-name">AIDE Plus</div>
+          <div class="drawer-brand-sub">plus.androidide.cn</div>
+        </div>
+      </div>
+      <v-divider></v-divider>
+      <v-list nav color="primary">
+        <v-list-item v-for="item in NAV_ITEMS" :key="item.path" :prepend-icon="item.icon"
+                     :title="$t(item.titleKey)" :active="isActive(item.path)" @click="navigate(item.path)">
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
 
-      <mdui-dropdown v-if="displayIconButton" trigger="hover">
-        <mdui-button-icon icon="color_lens" slot="trigger"></mdui-button-icon>
-        <ColorPicker/>
-      </mdui-dropdown>
-
-      <mdui-button-icon v-if="displayIconButton" icon="code" href="https://github.com/AndroidIDE-CN/AIDE-Plus"
-                        target="_blank" rel="noopener"></mdui-button-icon>
-    </mdui-top-app-bar>
-
-    <mdui-navigation-drawer class="navigation-drawer" contained close-on-esc close-on-overlay-click
-                            :open="isOpen" @close="isOpen=false">
-      <mdui-list class="navigation-drawer-list">
-        <mdui-list-item v-for="item in navItems" :key="item.path" rounded :icon="item.icon"
-                        :active="isActive(item.path)" @click="menuClick(item.path)">
-          {{ $t(item.titleKey) }}
-        </mdui-list-item>
-      </mdui-list>
-    </mdui-navigation-drawer>
-
-    <mdui-layout-main class="layout-main hide-scrollbar">
+    <v-main>
       <div class="page-wrapper">
         <RouterView/>
       </div>
       <footer class="site-footer">
         <span>{{ $t('footer.copyright', {year}) }}</span>
-        <span class="site-footer-sub">{{ $t('footer.madeWith') }}</span>
+        <span>{{ $t('footer.madeWith') }}</span>
       </footer>
-    </mdui-layout-main>
-  </mdui-layout>
+    </v-main>
+  </v-app>
 </template>

@@ -4,7 +4,7 @@ AIDE Plus builds native code with CMake and ships an NDK / CMake toolchain manag
 
 ## Installing toolchains
 
-Open **Compiler / Native code / NDK / CMake manager** and install the versions you need:
+Open **Settings → Build & run → Native code → Toolchain manager** (also reachable from **Settings → About → Native and Kotlin toolchains**), pick a version and tap **Download and install**:
 
 | Tool | Versions |
 | --- | --- |
@@ -14,6 +14,10 @@ Open **Compiler / Native code / NDK / CMake manager** and install the versions y
 - Downloads are verified with SHA-256 and can resume.
 - Each version has its own directory, so several can be installed at once.
 - After extraction, execution permissions for `cmake` and related tools are repaired. When app storage doesn’t allow execution, tools run through the Android linker.
+- For classic ndk-build projects, also tap **Use for ndk-build** after installing. CMake projects use the version in the project config.
+- CMake 3.31 needs NDK r25 or later.
+- Beta and side-by-side builds can turn on **Use the main app’s NDK / CMake** to share one install (same signature required).
+- Installed versions can be uninstalled and the download cache cleared at the bottom of the page.
 
 ## Using it in a project
 

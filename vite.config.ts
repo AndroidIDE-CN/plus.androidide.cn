@@ -2,6 +2,7 @@ import {fileURLToPath, URL} from 'node:url'
 import {defineConfig, IndexHtmlTransformResult, PluginOption} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import vuetify from 'vite-plugin-vuetify'
 import htmlMinifier from 'vite-plugin-html-minifier-terser'
 
 const removeScriptPlugin: PluginOption = {
@@ -17,13 +18,9 @@ const removeScriptPlugin: PluginOption = {
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    vue({
-      template: {
-        compilerOptions: {
-          isCustomElement: (tag) => tag.startsWith('mdui-')
-        }
-      }
-    }),
+    vue(),
+    // 按需引入 Vuetify 组件与样式
+    vuetify({autoImport: true}),
     vueJsx(),
     htmlMinifier({
       // HTML 压缩选项

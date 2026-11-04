@@ -63,7 +63,7 @@ async function load() {
   }
   loading.value = false
   await nextTick()
-  document.querySelector('.layout-main')?.scrollTo({top: 0})
+  window.scrollTo({top: 0})
 }
 
 /**
@@ -95,53 +95,42 @@ function onContentClick(event: MouseEvent) {
   }
 }
 
-/**
- * 手机端下拉选择文档。
- * @param event change 事件
- */
-function onSelect(event: Event) {
-  const value = (event.target as HTMLSelectElement).value
-  if (value && value !== currentId.value) open(value)
-}
-
 watch(currentId, load, {immediate: true})
 </script>
 
 <template>
   <div class="docs-layout">
     <aside class="docs-nav">
-      <mdui-select class="docs-select" variant="outlined" :value="currentId" @change="onSelect">
-        <mdui-menu-item v-for="d in DOCS" :key="d.id" :value="d.id" :icon="d.icon">
-          {{ $t(`docs.items.${d.id}`) }}
-        </mdui-menu-item>
-      </mdui-select>
-      <mdui-list class="docs-list">
-        <mdui-list-subheader>{{ $t('docs.title') }}</mdui-list-subheader>
-        <mdui-list-item v-for="d in DOCS" :key="d.id" rounded :icon="d.icon" :active="d.id === currentId"
-                        @click="open(d.id)">
-          {{ $t(`docs.items.${d.id}`) }}
-        </mdui-list-item>
-      </mdui-list>
+      <v-select class="docs-select" :model-value="currentId" :items="DOCS" item-value="id"
+                :item-title="d => $t(`docs.items.${d.id}`)" prepend-inner-icon="menu_book" hide-details
+                @update:model-value="open"></v-select>
+      <v-card class="docs-list" elevation="1">
+        <v-list nav density="compact" color="primary">
+          <v-list-subheader>{{ $t('docs.title') }}</v-list-subheader>
+          <v-list-item v-for="d in DOCS" :key="d.id" :prepend-icon="d.icon" :title="$t(`docs.items.${d.id}`)"
+                       :active="d.id === currentId" @click="open(d.id)"></v-list-item>
+        </v-list>
+      </v-card>
     </aside>
 
-    <article class="docs-content">
-      <mdui-linear-progress v-if="loading"></mdui-linear-progress>
+    <v-card class="docs-content" elevation="1">
+      <v-progress-linear v-if="loading" indeterminate color="primary"></v-progress-linear>
       <p v-else-if="notFound" class="empty-state">{{ $t('docs.notFound') }}</p>
       <div v-else ref="content" class="markdown-body" v-html="html" @click="onContentClick"></div>
 
       <nav class="docs-pager" v-if="!loading && !notFound">
-        <mdui-button v-if="prev" variant="outlined" icon="arrow_back" @click="open(prev.id)">
-          {{ $t('docs.prev') }} · {{ $t(`docs.items.${prev.id}`) }}
-        </mdui-button>
+        <v-btn v-if="prev" variant="outlined" prepend-icon="arrow_back" @click="open(prev.id)">
+          {{ $t(`docs.items.${prev.id}`) }}
+        </v-btn>
         <span class="spacer"></span>
-        <mdui-button v-if="next" variant="outlined" end-icon="arrow_forward" @click="open(next.id)">
-          {{ $t('docs.next') }} · {{ $t(`docs.items.${next.id}`) }}
-        </mdui-button>
+        <v-btn v-if="next" variant="outlined" append-icon="arrow_forward" @click="open(next.id)">
+          {{ $t(`docs.items.${next.id}`) }}
+        </v-btn>
       </nav>
       <p class="docs-edit">
         <a :href="`${REPO_URL}/issues`" target="_blank" rel="noopener">{{ $t('docs.edit') }}</a>
       </p>
-    </article>
+    </v-card>
 
     <aside class="docs-toc" v-if="toc.length">
       <div class="docs-toc-title">{{ $t('docs.toc') }}</div>
