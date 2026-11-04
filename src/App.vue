@@ -7,7 +7,7 @@ import {changeLanguage} from "@/lang/i18n"
 import {applyThemeMode, savedThemeMode} from "@/plugins/vuetify"
 import type {ThemeMode} from "@/plugins/vuetify"
 import ColorPicker from "@/components/ColorPicker.vue"
-import {REPO_URL} from "@/config"
+import {LOGO_URL, REPO_URL} from "@/config"
 
 /** 侧边栏导航项 */
 const NAV_ITEMS = [
@@ -112,7 +112,7 @@ watch(mdAndUp, v => drawer.value = v)
 
     <v-navigation-drawer v-model="drawer" :permanent="mdAndUp" :temporary="!mdAndUp" width="256">
       <div class="drawer-brand">
-        <img src="/favicon.png" alt="" width="40" height="40">
+        <img :src="LOGO_URL" alt="" width="40" height="40">
         <div>
           <div class="drawer-brand-name">AIDE Plus</div>
           <div class="drawer-brand-sub">plus.androidide.cn</div>
